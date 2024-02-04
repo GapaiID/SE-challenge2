@@ -1,15 +1,21 @@
 package controllers
 
 import (
+	"github.com/agung96tm/miblog/api/dto"
+	"github.com/agung96tm/miblog/api/services"
+	"github.com/agung96tm/miblog/pkg/response"
 	"github.com/labstack/echo/v4"
 	"net/http"
 )
 
 type CommentController struct {
+	commentService services.CommentService
 }
 
-func NewCommentController() CommentController {
-	return CommentController{}
+func NewCommentController(commentService services.CommentService) CommentController {
+	return CommentController{
+		commentService: commentService,
+	}
 }
 
 // List godoc
@@ -22,7 +28,24 @@ func NewCommentController() CommentController {
 //	@Router			/comments [get]
 //	@Success		200  {object}  response.Response{data=dto.CommentPagination}  "ok"
 func (c CommentController) List(ctx echo.Context) error {
-	return ctx.JSON(http.StatusOK, "list")
+	queryParams := new(dto.CommentQueryParams)
+	if err := ctx.Bind(queryParams); err != nil {
+		return response.Response{
+			Error: err,
+		}.JSONValidationError(ctx)
+	}
+
+	paginationResp, err := c.commentService.Query(queryParams)
+	if err != nil {
+		return response.Response{
+			Code:    http.StatusBadRequest,
+			Message: err,
+		}.JSON(ctx)
+	}
+
+	return response.Response{
+		Data: paginationResp,
+	}.JSON(ctx)
 }
 
 // Detail godoc

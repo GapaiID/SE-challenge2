@@ -16,8 +16,24 @@ func NewCommentRepository(db lib.Database) CommentRepository {
 	}
 }
 
-func (b CommentRepository) Query(params *dto.CommentQueryParams) (*models.Comment, *dto.Pagination, error) {
-	return nil, nil, nil
+func (b CommentRepository) Query(params *dto.CommentQueryParams) (*models.Comments, *dto.Pagination, error) {
+	db := b.Db.ORM.Preload("User").Preload("Post").Model(&models.Comments{})
+
+	if params.Q != "" {
+		db = db.Where("title = ?", params.Q)
+	}
+
+	if params.PaginationParams.PageSize == 0 {
+		params.PaginationParams.PageSize = 5
+	}
+
+	list := make(models.Comments, 0)
+	pagination, err := QueryPagination(db, params.PaginationParams, &list)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	return &list, pagination, nil
 }
 
 func (b CommentRepository) Get(id uint) (*models.Comment, error) {
