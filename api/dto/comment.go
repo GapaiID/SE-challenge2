@@ -1,12 +1,21 @@
 package dto
 
-type CommentUser struct {
+type UserInComment struct {
+	ID    uint   `json:"id"`
 	Name  string `json:"name"`
 	Email string `json:"email"`
 }
 
+type PostInComment struct {
+	ID    uint   `json:"id"`
+	Title string `json:"title"`
+}
+
 type Comment struct {
-	User *CommentUser `json:"user"`
+	ID   uint           `json:"id"`
+	Body string         `json:"body"`
+	User *UserInComment `json:"user"`
+	Post *PostInComment `json:"post"`
 }
 
 type CommentQueryParams struct {
