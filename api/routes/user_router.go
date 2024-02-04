@@ -17,6 +17,8 @@ func NewUserRouter(handler lib.HttpHandler, userController controllers.UserContr
 	}
 }
 
-func (u UserRouter) Setup() {
-	u.handler.Engine.GET("/me", u.userController.Me)
+func (r UserRouter) Setup() {
+	r.handler.Engine.GET("/me", r.userController.Me)
+	r.handler.Engine.PATCH("/me", r.userController.MeUpdate)
+	r.handler.Engine.POST("/me/password", r.userController.MePassword)
 }

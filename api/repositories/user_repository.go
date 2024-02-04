@@ -23,6 +23,14 @@ func (r UserRepository) Create(user *models.User) error {
 	return nil
 }
 
+func (r UserRepository) Update(user *models.User) error {
+	err := r.Db.ORM.Model(&user).Updates(&user).Error
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
 func (r UserRepository) GetByEmail(email string) (*models.User, error) {
 	var user models.User
 	err := r.Db.ORM.Where("email = ?", email).Find(&user).Error

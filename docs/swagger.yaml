@@ -4,6 +4,8 @@ definitions:
       email:
         type: string
       password:
+        maxLength: 20
+        minLength: 8
         type: string
     required:
     - email
@@ -14,13 +16,48 @@ definitions:
       token:
         type: string
     type: object
-  dto.RegisterRequest:
+  dto.MePasswordRequest:
+    properties:
+      confirm_password:
+        maxLength: 20
+        minLength: 8
+        type: string
+      new_password:
+        maxLength: 20
+        minLength: 8
+        type: string
+      old_password:
+        maxLength: 20
+        minLength: 8
+        type: string
+    required:
+    - confirm_password
+    - new_password
+    - old_password
+    type: object
+  dto.MeResponse:
     properties:
       email:
         type: string
       name:
         type: string
+    type: object
+  dto.MeUpdateRequest:
+    properties:
+      name:
+        type: string
+    type: object
+  dto.RegisterRequest:
+    properties:
+      email:
+        type: string
+      name:
+        maxLength: 20
+        minLength: 3
+        type: string
       password:
+        maxLength: 20
+        minLength: 8
         type: string
     required:
     - email
@@ -47,13 +84,7 @@ definitions:
         type: string
     type: object
 info:
-  contact:
-    email: agung.96tm@gmail.com
-    name: Agung Yuliyanto
-  description: Miblog API Endpoint.
-  termsOfService: http://swagger.io/terms/
-  title: Miblog API
-  version: "1.0"
+  contact: {}
 paths:
   /login:
     post:
@@ -95,6 +126,74 @@ paths:
       summary: Login User
       tags:
       - auth
+  /me:
+    get:
+      consumes:
+      - application/json
+      description: Get data Logged-in user
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: ok
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/dto.MeResponse'
+              type: object
+      summary: Get data Logged-in user
+      tags:
+      - user
+    patch:
+      consumes:
+      - application/json
+      description: Update data Logged-in user
+      parameters:
+      - description: Post
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/dto.MeUpdateRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: ok
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/dto.MeResponse'
+              type: object
+      summary: Update data Logged-in user
+      tags:
+      - user
+  /me/password:
+    post:
+      consumes:
+      - application/json
+      description: Get data Logged-in user
+      parameters:
+      - description: Post
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/dto.MePasswordRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: ok
+          schema:
+            $ref: '#/definitions/response.Response'
+      summary: Get data Logged-in user
+      tags:
+      - user
   /register:
     post:
       consumes:

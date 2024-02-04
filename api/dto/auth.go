@@ -2,8 +2,8 @@ package dto
 
 type RegisterRequest struct {
 	Email    string `json:"email" validate:"required,email"`
-	Name     string `json:"name" validate:"required"`
-	Password string `json:"password" validate:"required"`
+	Name     string `json:"name" validate:"required,min=3,max=20"`
+	Password string `json:"password" validate:"required,min=8,max=20"`
 }
 
 type RegisterResponse struct {
@@ -13,7 +13,7 @@ type RegisterResponse struct {
 
 type LoginRequest struct {
 	Email    string `json:"email" validate:"required,email"`
-	Password string `json:"password" validate:"required"`
+	Password string `json:"password" validate:"required,min=8,max=20"`
 }
 
 type LoginResponse struct {

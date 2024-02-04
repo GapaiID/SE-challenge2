@@ -27,8 +27,12 @@ func MessageForTag(fe validator.FieldError) string {
 		return "This field is required"
 	case "email":
 		return "This field must be email"
+	case "min":
+		return "This field has min length"
+	case "max":
+		return "This field has max length"
 	}
-	return fe.Error()
+	return fe.Tag()
 }
 
 func (a Response) JSONValidationError(ctx echo.Context) error {

@@ -25,6 +25,11 @@ func (m *User) BeforeCreate(_ *gorm.DB) (err error) {
 	return
 }
 
+func (m *User) BeforeUpdate(_ *gorm.DB) (err error) {
+	m.Password = HashPassword(m.Password)
+	return
+}
+
 func (m *User) CheckPassword(plain string) (bool, error) {
 	storedHashBytes, err := hex.DecodeString(m.Password)
 	if err != nil {
