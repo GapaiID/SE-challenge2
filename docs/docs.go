@@ -677,8 +677,17 @@ const docTemplate = `{
         "dto.Comment": {
             "type": "object",
             "properties": {
+                "body": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "post": {
+                    "$ref": "#/definitions/dto.PostInComment"
+                },
                 "user": {
-                    "$ref": "#/definitions/dto.CommentUser"
+                    "$ref": "#/definitions/dto.UserInComment"
                 }
             }
         },
@@ -701,17 +710,6 @@ const docTemplate = `{
         },
         "dto.CommentUpdateResponse": {
             "type": "object"
-        },
-        "dto.CommentUser": {
-            "type": "object",
-            "properties": {
-                "email": {
-                    "type": "string"
-                },
-                "name": {
-                    "type": "string"
-                }
-            }
         },
         "dto.LoginRequest": {
             "type": "object",
@@ -796,6 +794,17 @@ const docTemplate = `{
                 }
             }
         },
+        "dto.PostInComment": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "integer"
+                },
+                "title": {
+                    "type": "string"
+                }
+            }
+        },
         "dto.RegisterRequest": {
             "type": "object",
             "required": [
@@ -824,6 +833,20 @@ const docTemplate = `{
             "properties": {
                 "email": {
                     "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                }
+            }
+        },
+        "dto.UserInComment": {
+            "type": "object",
+            "properties": {
+                "email": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
                 },
                 "name": {
                     "type": "string"

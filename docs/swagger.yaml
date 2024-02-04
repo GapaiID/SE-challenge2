@@ -41,8 +41,14 @@ definitions:
     type: object
   dto.Comment:
     properties:
+      body:
+        type: string
+      id:
+        type: integer
+      post:
+        $ref: '#/definitions/dto.PostInComment'
       user:
-        $ref: '#/definitions/dto.CommentUser'
+        $ref: '#/definitions/dto.UserInComment'
     type: object
   dto.CommentCreateResponse:
     type: object
@@ -56,13 +62,6 @@ definitions:
         $ref: '#/definitions/dto.Pagination'
     type: object
   dto.CommentUpdateResponse:
-    type: object
-  dto.CommentUser:
-    properties:
-      email:
-        type: string
-      name:
-        type: string
     type: object
   dto.LoginRequest:
     properties:
@@ -121,6 +120,13 @@ definitions:
       total:
         type: integer
     type: object
+  dto.PostInComment:
+    properties:
+      id:
+        type: integer
+      title:
+        type: string
+    type: object
   dto.RegisterRequest:
     properties:
       email:
@@ -142,6 +148,15 @@ definitions:
     properties:
       email:
         type: string
+      name:
+        type: string
+    type: object
+  dto.UserInComment:
+    properties:
+      email:
+        type: string
+      id:
+        type: integer
       name:
         type: string
     type: object
