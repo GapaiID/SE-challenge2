@@ -1,6 +1,8 @@
 package response
 
 import (
+	"errors"
+	appErrors "github.com/agung96tm/miblog/errors"
 	"github.com/go-playground/validator/v10"
 	"github.com/labstack/echo/v4"
 	"net/http"
@@ -14,11 +16,11 @@ type ValidationError struct {
 type ValidationErrors []ValidationError
 
 type Response struct {
-	Code    int  `json:"-"`
-	Pretty  bool `json:"-"`
-	Data    any  `json:"data,omitempty"`
-	Message any  `json:"message"`
-	Error   any  `json:"-"`
+	Code    int   `json:"-"`
+	Pretty  bool  `json:"-"`
+	Data    any   `json:"data,omitempty"`
+	Message any   `json:"message"`
+	Error   error `json:"-"`
 }
 
 func MessageForTag(fe validator.FieldError) string {
@@ -51,6 +53,14 @@ func (a Response) JSONValidationError(ctx echo.Context) error {
 		return a.JSON(ctx)
 	}
 
+	return a.JSON(ctx)
+}
+
+func (a Response) JSONPolicyError(ctx echo.Context) error {
+	if errors.Is(a.Error, appErrors.ErrPolicyUnauthorized) {
+		a.Message = a.Error.Error()
+		a.Code = http.StatusUnauthorized
+	}
 	return a.JSON(ctx)
 }
 
