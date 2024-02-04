@@ -34,12 +34,20 @@ func NewMail(config Config) Mail {
 	}
 	server.KeepAlive = true
 
-	smtp, err := server.Connect()
-	if err != nil && config.Mail.Enable {
-		log.Fatalf("[Mail] Error to open mail [%s] connection: %v", config.Mail.Host, err)
+	smtp := &mail.SMTPClient{}
+
+	if config.Mail.Enable {
+		client, err := server.Connect()
+		if err != nil && config.Mail.Enable {
+			log.Fatalf("[Mail] Error to open mail [%s] connection: %v", config.Mail.Host, err)
+		}
+		smtp = client
 	}
 
-	return Mail{smtp: smtp, config: config.Mail}
+	return Mail{
+		smtp:   smtp,
+		config: config.Mail,
+	}
 }
 
 func (l Mail) SendMailWithTemplate(mailTemplate MailTemplate) {
