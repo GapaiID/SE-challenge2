@@ -1,4 +1,31 @@
 definitions:
+  dto.BlogPost:
+    properties:
+      body:
+        type: string
+      id:
+        type: integer
+      title:
+        type: string
+      user:
+        $ref: '#/definitions/dto.BlogUser'
+    type: object
+  dto.BlogPostPagination:
+    properties:
+      list:
+        items:
+          $ref: '#/definitions/dto.BlogPost'
+        type: array
+      pagination:
+        $ref: '#/definitions/dto.Pagination'
+    type: object
+  dto.BlogUser:
+    properties:
+      id:
+        type: integer
+      name:
+        type: string
+    type: object
   dto.LoginRequest:
     properties:
       email:
@@ -47,6 +74,15 @@ definitions:
       name:
         type: string
     type: object
+  dto.Pagination:
+    properties:
+      current:
+        type: integer
+      page_size:
+        type: integer
+      total:
+        type: integer
+    type: object
   dto.RegisterRequest:
     properties:
       email:
@@ -86,6 +122,93 @@ definitions:
 info:
   contact: {}
 paths:
+  /blog_posts:
+    get:
+      consumes:
+      - application/json
+      description: Get Pagination and Several Posts
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: ok
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/dto.BlogPostPagination'
+              type: object
+      summary: Get Pagination and Several Posts
+      tags:
+      - blog
+    post:
+      consumes:
+      - application/json
+      description: Create a Post
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: created
+          schema:
+            $ref: '#/definitions/response.Response'
+      summary: Create a Post
+      tags:
+      - blog
+  /blog_posts/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete a Post
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: no content
+          schema:
+            $ref: '#/definitions/response.Response'
+      summary: Delete a Post
+      tags:
+      - blog
+    get:
+      consumes:
+      - application/json
+      description: Get detail a post
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: ok
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/dto.BlogPost'
+              type: object
+      summary: Get detail a post
+      tags:
+      - blog
+    patch:
+      consumes:
+      - application/json
+      description: Update a Post
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: ok
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/dto.BlogPost'
+              type: object
+      summary: Update a Post
+      tags:
+      - blog
   /login:
     post:
       consumes:

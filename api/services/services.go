@@ -6,4 +6,5 @@ var Module = fx.Module(
 	"services",
 	fx.Provide(NewAuthService),
 	fx.Provide(NewUserService),
+	fx.Provide(NewBlogService),
 )

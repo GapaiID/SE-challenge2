@@ -7,4 +7,5 @@ var Module = fx.Module(
 	fx.Provide(NewMainController),
 	fx.Provide(NewAuthController),
 	fx.Provide(NewUserController),
+	fx.Provide(NewBlogController),
 )
