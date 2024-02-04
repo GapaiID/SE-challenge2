@@ -22,5 +22,5 @@ func (r BlogRouter) Setup() {
 	r.handler.Engine.POST("/blog_posts", r.blogController.Create)
 	r.handler.Engine.GET("/blog_posts/:id", r.blogController.Detail)
 	r.handler.Engine.PATCH("/blog_posts/:id", r.blogController.Update)
-	r.handler.Engine.GET("/blog_posts/:id", r.blogController.Delete)
+	r.handler.Engine.DELETE("/blog_posts/:id", r.blogController.Delete)
 }
