@@ -51,3 +51,15 @@ func (s BlogService) Create(user *models.User, postReq *dto.BlogPostCreateReques
 		Body:  post.Body,
 	}, nil
 }
+
+func (s BlogService) Delete(postID uint) error {
+	var post models.BlogPost
+	post.ID = postID
+
+	err := s.blogPostRepository.Delete(&post)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}

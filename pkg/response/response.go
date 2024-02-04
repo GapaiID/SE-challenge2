@@ -57,10 +57,14 @@ func (a Response) JSONValidationError(ctx echo.Context) error {
 }
 
 func (a Response) JSONPolicyError(ctx echo.Context) error {
+	a.Message = a.Error.Error()
 	if errors.Is(a.Error, appErrors.ErrPolicyUnauthorized) {
-		a.Message = a.Error.Error()
 		a.Code = http.StatusUnauthorized
 	}
+	if errors.Is(a.Error, appErrors.ErrPolicyForbidden) {
+		a.Code = http.StatusForbidden
+	}
+
 	return a.JSON(ctx)
 }
 

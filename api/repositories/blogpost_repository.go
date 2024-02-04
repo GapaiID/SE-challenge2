@@ -31,3 +31,7 @@ func (b BlogPostRepository) Create(post *models.BlogPost) error {
 	}
 	return nil
 }
+
+func (b BlogPostRepository) Delete(post *models.BlogPost) error {
+	return b.Db.ORM.Delete(&post).Error
+}

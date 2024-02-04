@@ -34,10 +34,19 @@ func (u BlogPolicy) CanUpdate(ctx echo.Context, postID uint) (bool, error) {
 	return false, nil
 }
 
-func (u BlogPolicy) CanDelete(ctx echo.Context, postID uint) (bool, error) {
+func (u BlogPolicy) CanDelete(ctx echo.Context, postID uint) error {
 	user, ok := ctx.Get(constants.CurrentUser).(*models.User)
 	if !ok || user.IsAnonymous() {
-		return false, appErrors.ErrPolicyUnauthorized
+		return appErrors.ErrPolicyUnauthorized
 	}
-	return false, nil
+
+	postRes, err := u.blogService.Get(postID)
+	if err != nil {
+		return err
+	}
+
+	if user.ID != postRes.User.ID {
+		return appErrors.ErrPolicyForbidden
+	}
+	return nil
 }
