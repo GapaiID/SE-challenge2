@@ -1,6 +1,7 @@
 package lib
 
 import (
+	"context"
 	"database/sql"
 	"errors"
 	"github.com/pressly/goose/v3"
@@ -19,7 +20,7 @@ func NewMigration(config Config) Migration {
 }
 
 func (l Migration) Create(filename string) error {
-	if err := goose.Run("create", nil, l.config.Database.MigrationDir, filename, "sql"); err != nil {
+	if err := goose.RunContext(context.Background(), "create", nil, l.config.Database.MigrationDir, filename, "sql"); err != nil {
 		return err
 	}
 	return nil
