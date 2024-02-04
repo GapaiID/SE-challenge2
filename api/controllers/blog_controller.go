@@ -58,6 +58,7 @@ func (c BlogController) Detail(ctx echo.Context) error {
 	postResp, err := c.blogService.Get(uint(postID))
 	if err != nil {
 		return response.Response{
+			Code:    http.StatusNotFound,
 			Message: err,
 		}.JSON(ctx)
 	}

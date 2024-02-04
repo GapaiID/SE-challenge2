@@ -17,7 +17,7 @@ func NewBlogPostRepository(db lib.Database) BlogPostRepository {
 
 func (b BlogPostRepository) Get(id uint) (*models.BlogPost, error) {
 	var post models.BlogPost
-	err := b.Db.ORM.Preload("User").Where("id = ?", id).Find(&post).Error
+	err := b.Db.ORM.Preload("User").Where("id = ?", id).First(&post).Error
 	if err != nil {
 		return nil, err
 	}

@@ -16,8 +16,8 @@ func NewBlogService(blogPostRepository repositories.BlogPostRepository) BlogServ
 	}
 }
 
-func (s BlogService) Get(id uint) (*dto.BlogPost, error) {
-	post, err := s.blogPostRepository.Get(id)
+func (s BlogService) Get(postID uint) (*dto.BlogPost, error) {
+	post, err := s.blogPostRepository.Get(postID)
 	if err != nil {
 		return nil, err
 	}
