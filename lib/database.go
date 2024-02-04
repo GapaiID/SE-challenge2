@@ -4,6 +4,7 @@ import (
 	"github.com/labstack/gommon/log"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
+	"gorm.io/gorm/logger"
 )
 
 type Database struct {
@@ -15,7 +16,9 @@ func NewDatabase(config Config) Database {
 		DSN: config.Database.DSN(),
 	}
 
-	db, err := gorm.Open(postgres.New(pconfig), &gorm.Config{})
+	db, err := gorm.Open(postgres.New(pconfig), &gorm.Config{
+		Logger: logger.Default.LogMode(logger.Silent),
+	})
 	if err != nil {
 		log.Fatalf("[Database] Error open database[%s]: %s", pconfig.DSN, err)
 	}
