@@ -2,19 +2,23 @@ package controllers
 
 import (
 	"github.com/agung96tm/miblog/api/dto"
+	"github.com/agung96tm/miblog/api/policies"
 	"github.com/agung96tm/miblog/api/services"
 	"github.com/agung96tm/miblog/pkg/response"
 	"github.com/labstack/echo/v4"
 	"net/http"
+	"strconv"
 )
 
 type CommentController struct {
 	commentService services.CommentService
+	commentPolicy  policies.CommentPolicy
 }
 
-func NewCommentController(commentService services.CommentService) CommentController {
+func NewCommentController(commentService services.CommentService, commentPolicy policies.CommentPolicy) CommentController {
 	return CommentController{
 		commentService: commentService,
+		commentPolicy:  commentPolicy,
 	}
 }
 
@@ -58,7 +62,26 @@ func (c CommentController) List(ctx echo.Context) error {
 //	@Router			/comments/{id} [get]
 //	@Success		200  {object}  response.Response{data=dto.Comment}  "ok"
 func (c CommentController) Detail(ctx echo.Context) error {
-	return ctx.JSON(http.StatusOK, "detail")
+	commentID, err := strconv.ParseUint(ctx.Param("id"), 10, 32)
+	if err != nil {
+		return response.Response{
+			Code:    http.StatusInternalServerError,
+			Message: err,
+		}.JSON(ctx)
+	}
+
+	postResp, err := c.commentService.Get(uint(commentID))
+	if err != nil {
+		return response.Response{
+			Code:    http.StatusNotFound,
+			Message: err,
+		}.JSON(ctx)
+	}
+
+	return response.Response{
+		Code: http.StatusOK,
+		Data: postResp,
+	}.JSON(ctx)
 }
 
 // Create godoc
@@ -100,5 +123,30 @@ func (c CommentController) Update(ctx echo.Context) error {
 //	@Security 		BearerAuth
 //	@Success		204  {object}  response.Response{}  "no content"
 func (c CommentController) Delete(ctx echo.Context) error {
-	return ctx.JSON(http.StatusOK, "delete")
+	commentID, err := strconv.ParseUint(ctx.Param("id"), 10, 32)
+	if err != nil {
+		return response.Response{
+			Code:    http.StatusInternalServerError,
+			Message: err,
+		}.JSON(ctx)
+	}
+
+	err = c.commentPolicy.CanDelete(ctx, uint(commentID))
+	if err != nil {
+		return response.Response{
+			Error: err,
+		}.JSONPolicyError(ctx)
+	}
+
+	err = c.commentService.Delete(uint(commentID))
+	if err != nil {
+		return response.Response{
+			Code:    http.StatusBadRequest,
+			Message: err,
+		}.JSON(ctx)
+	}
+
+	return response.Response{
+		Code: http.StatusNoContent,
+	}.JSON(ctx)
 }

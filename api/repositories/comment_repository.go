@@ -37,7 +37,12 @@ func (b CommentRepository) Query(params *dto.CommentQueryParams) (*models.Commen
 }
 
 func (b CommentRepository) Get(id uint) (*models.Comment, error) {
-	return nil, nil
+	var comment models.Comment
+	err := b.Db.ORM.Preload("User").Preload("Post").Where("id = ?", id).First(&comment).Error
+	if err != nil {
+		return nil, err
+	}
+	return &comment, nil
 }
 
 func (b CommentRepository) Create(post *models.Comment) error {
@@ -45,5 +50,5 @@ func (b CommentRepository) Create(post *models.Comment) error {
 }
 
 func (b CommentRepository) Delete(post *models.Comment) error {
-	return nil
+	return b.Db.ORM.Delete(&post).Error
 }

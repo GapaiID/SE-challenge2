@@ -44,14 +44,38 @@ func (s CommentService) Query(params *dto.CommentQueryParams) (any, error) {
 	}, nil
 }
 
-func (s CommentService) Get(postID uint) (*dto.BlogPost, error) {
-	return nil, nil
+func (s CommentService) Get(commentID uint) (*dto.Comment, error) {
+	comment, err := s.commentRepository.Get(commentID)
+	if err != nil {
+		return nil, err
+	}
+
+	return &dto.Comment{
+		ID:   comment.ID,
+		Body: comment.Body,
+		User: &dto.UserInComment{
+			ID:   comment.User.ID,
+			Name: comment.User.Name,
+		},
+		Post: &dto.PostInComment{
+			ID:    comment.Post.ID,
+			Title: comment.Post.Title,
+		},
+	}, nil
 }
 
 func (s CommentService) Create(user *models.User, postReq *dto.BlogPostCreateRequest) (*dto.BlogPostCreateResponse, error) {
 	return nil, nil
 }
 
-func (s CommentService) Delete(postID uint) error {
+func (s CommentService) Delete(commentID uint) error {
+	var post models.Comment
+	post.ID = commentID
+
+	err := s.commentRepository.Delete(&post)
+	if err != nil {
+		return err
+	}
+
 	return nil
 }
