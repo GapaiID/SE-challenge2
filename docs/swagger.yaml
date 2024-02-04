@@ -10,6 +10,19 @@ definitions:
       user:
         $ref: '#/definitions/dto.BlogUser'
     type: object
+  dto.BlogPostCreateRequest:
+    properties:
+      body:
+        minLength: 10
+        type: string
+      title:
+        maxLength: 200
+        minLength: 10
+        type: string
+    required:
+    - body
+    - title
+    type: object
   dto.BlogPostPagination:
     properties:
       list:
@@ -152,7 +165,12 @@ paths:
         "201":
           description: created
           schema:
-            $ref: '#/definitions/response.Response'
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/dto.BlogPostCreateRequest'
+              type: object
       summary: Create a Post
       tags:
       - blog

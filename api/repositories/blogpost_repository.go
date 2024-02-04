@@ -23,3 +23,11 @@ func (b BlogPostRepository) Get(id uint) (*models.BlogPost, error) {
 	}
 	return &post, nil
 }
+
+func (b BlogPostRepository) Create(post *models.BlogPost) error {
+	err := b.Db.ORM.Create(&post).Error
+	if err != nil {
+		return err
+	}
+	return nil
+}

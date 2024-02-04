@@ -1,8 +1,11 @@
 package controllers
 
 import (
+	"github.com/agung96tm/miblog/api/dto"
+	"github.com/agung96tm/miblog/api/models"
 	"github.com/agung96tm/miblog/api/policies"
 	"github.com/agung96tm/miblog/api/services"
+	"github.com/agung96tm/miblog/constants"
 	"github.com/agung96tm/miblog/pkg/response"
 	"github.com/labstack/echo/v4"
 	"net/http"
@@ -73,9 +76,35 @@ func (c BlogController) Detail(ctx echo.Context) error {
 //	@Accept			application/json
 //	@Produce		application/json
 //	@Router			/blog_posts [post]
-//	@Success		201  {object}  response.Response{}  "created"
+//	@Success		201  {object}  response.Response{data=dto.BlogPostCreateRequest}  "created"
 func (c BlogController) Create(ctx echo.Context) error {
-	return ctx.JSON(http.StatusOK, "create")
+	err := c.blogPolicy.CanCreate(ctx)
+	if err != nil {
+		return response.Response{
+			Error: err,
+		}.JSONPolicyError(ctx)
+	}
+
+	blogPostReq := new(dto.BlogPostCreateRequest)
+	if err := ctx.Bind(blogPostReq); err != nil {
+		return response.Response{
+			Error: err,
+		}.JSONValidationError(ctx)
+	}
+
+	user := ctx.Get(constants.CurrentUser).(*models.User)
+	postResp, err := c.blogService.Create(user, blogPostReq)
+	if err != nil {
+		return response.Response{
+			Code:    http.StatusBadRequest,
+			Message: err,
+		}.JSON(ctx)
+	}
+
+	return response.Response{
+		Code: http.StatusCreated,
+		Data: postResp,
+	}.JSON(ctx)
 }
 
 // Update godoc

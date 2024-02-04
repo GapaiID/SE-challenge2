@@ -18,8 +18,8 @@ type BlogPostPagination struct {
 }
 
 type BlogPostCreateRequest struct {
-	Title string `json:"title"`
-	Body  string `json:"body"`
+	Title string `json:"title" validate:"required,min=10,max=200"`
+	Body  string `json:"body" validate:"required,min=10"`
 }
 
 type BlogPostCreateResponse struct {

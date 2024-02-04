@@ -2,6 +2,7 @@ package services
 
 import (
 	"github.com/agung96tm/miblog/api/dto"
+	"github.com/agung96tm/miblog/api/models"
 	"github.com/agung96tm/miblog/api/repositories"
 )
 
@@ -29,5 +30,24 @@ func (s BlogService) Get(id uint) (*dto.BlogPost, error) {
 			ID:   post.User.ID,
 			Name: post.User.Name,
 		},
+	}, nil
+}
+
+func (s BlogService) Create(user *models.User, postReq *dto.BlogPostCreateRequest) (*dto.BlogPostCreateResponse, error) {
+	var post models.BlogPost
+
+	post.Title = postReq.Title
+	post.Body = postReq.Body
+	post.UserID = user.ID
+
+	err := s.blogPostRepository.Create(&post)
+	if err != nil {
+		return nil, err
+	}
+
+	return &dto.BlogPostCreateResponse{
+		ID:    post.ID,
+		Title: post.Title,
+		Body:  post.Body,
 	}, nil
 }

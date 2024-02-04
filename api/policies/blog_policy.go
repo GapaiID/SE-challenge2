@@ -18,12 +18,12 @@ func NewBlogPolicy(blogService services.BlogService) BlogPolicy {
 	}
 }
 
-func (u BlogPolicy) CanCreate(ctx echo.Context) (bool, error) {
+func (u BlogPolicy) CanCreate(ctx echo.Context) error {
 	user, ok := ctx.Get(constants.CurrentUser).(*models.User)
 	if !ok || user.IsAnonymous() {
-		return false, appErrors.ErrPolicyUnauthorized
+		return appErrors.ErrPolicyUnauthorized
 	}
-	return false, nil
+	return nil
 }
 
 func (u BlogPolicy) CanUpdate(ctx echo.Context, postID uint) (bool, error) {

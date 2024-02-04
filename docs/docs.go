@@ -65,7 +65,19 @@ const docTemplate = `{
                     "201": {
                         "description": "created",
                         "schema": {
-                            "$ref": "#/definitions/response.Response"
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.Response"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/dto.BlogPostCreateRequest"
+                                        }
+                                    }
+                                }
+                            ]
                         }
                     }
                 }
@@ -429,6 +441,24 @@ const docTemplate = `{
                 },
                 "user": {
                     "$ref": "#/definitions/dto.BlogUser"
+                }
+            }
+        },
+        "dto.BlogPostCreateRequest": {
+            "type": "object",
+            "required": [
+                "body",
+                "title"
+            ],
+            "properties": {
+                "body": {
+                    "type": "string",
+                    "minLength": 10
+                },
+                "title": {
+                    "type": "string",
+                    "maxLength": 200,
+                    "minLength": 10
                 }
             }
         },
