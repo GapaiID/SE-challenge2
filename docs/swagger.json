@@ -39,6 +39,11 @@
                 }
             },
             "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Create a Post",
                 "consumes": [
                     "application/json"
@@ -107,6 +112,11 @@
                 }
             },
             "delete": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Delete a Post",
                 "consumes": [
                     "application/json"
@@ -128,6 +138,11 @@
                 }
             },
             "patch": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Update a Post",
                 "consumes": [
                     "application/json"

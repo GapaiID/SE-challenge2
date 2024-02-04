@@ -171,6 +171,8 @@ paths:
                 data:
                   $ref: '#/definitions/dto.BlogPostCreateRequest'
               type: object
+      security:
+      - BearerAuth: []
       summary: Create a Post
       tags:
       - blog
@@ -186,6 +188,8 @@ paths:
           description: no content
           schema:
             $ref: '#/definitions/response.Response'
+      security:
+      - BearerAuth: []
       summary: Delete a Post
       tags:
       - blog
@@ -224,6 +228,8 @@ paths:
                 data:
                   $ref: '#/definitions/dto.BlogPost'
               type: object
+      security:
+      - BearerAuth: []
       summary: Update a Post
       tags:
       - blog

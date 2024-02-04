@@ -94,6 +94,7 @@ func (c BlogController) Detail(ctx echo.Context) error {
 //	@Accept			application/json
 //	@Produce		application/json
 //	@Router			/blog_posts [post]
+//	@Security 		BearerAuth
 //	@Success		201  {object}  response.Response{data=dto.BlogPostCreateRequest}  "created"
 func (c BlogController) Create(ctx echo.Context) error {
 	err := c.blogPolicy.CanCreate(ctx)
@@ -133,6 +134,7 @@ func (c BlogController) Create(ctx echo.Context) error {
 //	@Accept			application/json
 //	@Produce		application/json
 //	@Router			/blog_posts/{id} [patch]
+//	@Security 		BearerAuth
 //	@Success		200  {object}  response.Response{data=dto.BlogPost}  "ok"
 func (c BlogController) Update(ctx echo.Context) error {
 	return ctx.JSON(http.StatusOK, "update")
@@ -146,6 +148,7 @@ func (c BlogController) Update(ctx echo.Context) error {
 //	@Accept			application/json
 //	@Produce		application/json
 //	@Router			/blog_posts/{id} [delete]
+//	@Security 		BearerAuth
 //	@Success		204  {object}  response.Response{}  "no content"
 func (c BlogController) Delete(ctx echo.Context) error {
 	postID, err := strconv.ParseUint(ctx.Param("id"), 10, 32)
