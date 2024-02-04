@@ -4,7 +4,10 @@ Simple Blog created using Golang Programming
 
 ### Run Application
 ```shell
+# running database with docker-compose
 docker-compose up -d --build
+
+# run application
 go run main.go runserver
 ```
 

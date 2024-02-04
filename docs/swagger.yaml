@@ -39,6 +39,31 @@ definitions:
       name:
         type: string
     type: object
+  dto.Comment:
+    properties:
+      user:
+        $ref: '#/definitions/dto.CommentUser'
+    type: object
+  dto.CommentCreateResponse:
+    type: object
+  dto.CommentPagination:
+    properties:
+      list:
+        items:
+          $ref: '#/definitions/dto.Comment'
+        type: array
+      pagination:
+        $ref: '#/definitions/dto.Pagination'
+    type: object
+  dto.CommentUpdateResponse:
+    type: object
+  dto.CommentUser:
+    properties:
+      email:
+        type: string
+      name:
+        type: string
+    type: object
   dto.LoginRequest:
     properties:
       email:
@@ -231,6 +256,104 @@ paths:
       security:
       - BearerAuth: []
       summary: Update a Post
+      tags:
+      - blog
+  /comments:
+    get:
+      consumes:
+      - application/json
+      description: Get Pagination and Several Comments
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: ok
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/dto.CommentPagination'
+              type: object
+      summary: Get Pagination and Several Comments
+      tags:
+      - comment
+    post:
+      consumes:
+      - application/json
+      description: Create a Comment
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: created
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/dto.CommentCreateResponse'
+              type: object
+      security:
+      - BearerAuth: []
+      summary: Create a Comment
+      tags:
+      - comment
+  /comments/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete a Comment
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: no content
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - BearerAuth: []
+      summary: Delete a Comment
+      tags:
+      - comment
+    get:
+      consumes:
+      - application/json
+      description: Get detail a Comment
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: ok
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/dto.Comment'
+              type: object
+      summary: Get detail a Comment
+      tags:
+      - comment
+    patch:
+      consumes:
+      - application/json
+      description: Update a Comment
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: created
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/dto.CommentUpdateResponse'
+              type: object
+      security:
+      - BearerAuth: []
+      summary: Update a Comment
       tags:
       - blog
   /login:
