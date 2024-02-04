@@ -6,10 +6,10 @@ type BlogUser struct {
 }
 
 type BlogPost struct {
-	ID    uint     `json:"id"`
-	Title string   `json:"title"`
-	Body  string   `json:"body"`
-	User  BlogUser `json:"user"`
+	ID    uint      `json:"id"`
+	Title string    `json:"title"`
+	Body  string    `json:"body"`
+	User  *BlogUser `json:"user"`
 }
 
 type BlogPostPagination struct {

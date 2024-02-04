@@ -1,18 +1,23 @@
 package controllers
 
 import (
+	"github.com/agung96tm/miblog/api/policies"
 	"github.com/agung96tm/miblog/api/services"
+	"github.com/agung96tm/miblog/pkg/response"
 	"github.com/labstack/echo/v4"
 	"net/http"
+	"strconv"
 )
 
 type BlogController struct {
 	blogService services.BlogService
+	blogPolicy  policies.BlogPolicy
 }
 
-func NewBlogController(blogService services.BlogService) BlogController {
+func NewBlogController(blogService services.BlogService, blogPolicy policies.BlogPolicy) BlogController {
 	return BlogController{
 		blogService: blogService,
+		blogPolicy:  blogPolicy,
 	}
 }
 
@@ -39,7 +44,25 @@ func (c BlogController) List(ctx echo.Context) error {
 //	@Router			/blog_posts/{id} [get]
 //	@Success		200  {object}  response.Response{data=dto.BlogPost}  "ok"
 func (c BlogController) Detail(ctx echo.Context) error {
-	return ctx.JSON(http.StatusOK, "detail")
+	postID, err := strconv.ParseUint(ctx.Param("id"), 10, 32)
+	if err != nil {
+		return response.Response{
+			Code:    http.StatusInternalServerError,
+			Message: err,
+		}.JSON(ctx)
+	}
+
+	postResp, err := c.blogService.Get(uint(postID))
+	if err != nil {
+		return response.Response{
+			Message: err,
+		}.JSON(ctx)
+	}
+
+	return response.Response{
+		Code: http.StatusOK,
+		Data: postResp,
+	}.JSON(ctx)
 }
 
 // Create godoc
