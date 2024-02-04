@@ -13,4 +13,4 @@ type BlogPost struct {
 	User   User   `gorm:"foreignKey:UserID;references:ID;constraint:OnUpdate:CASCADE,OnDelete:CASCADE;"`
 }
 
-type Posts []BlogPost
+type BlogPosts []BlogPost

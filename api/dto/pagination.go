@@ -6,7 +6,7 @@ type Pagination struct {
 	PageSize int   `json:"page_size"`
 }
 
-type PaginationParam struct {
-	Current  int `json:"current"`
-	PageSize int `json:"page_size"`
+type PaginationParams struct {
+	Current  int `json:"current" query:"current"`
+	PageSize int `json:"page_size" query:"page_size"`
 }

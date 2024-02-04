@@ -16,6 +16,31 @@ func NewBlogService(blogPostRepository repositories.BlogPostRepository) BlogServ
 	}
 }
 
+func (s BlogService) Query(params *dto.BlogPostQueryParams) (any, error) {
+	list, pagination, err := s.blogPostRepository.Query(params)
+	if err != nil {
+		return nil, err
+	}
+
+	var posts []*dto.BlogPost
+	for _, post := range *list {
+		posts = append(posts, &dto.BlogPost{
+			ID:    post.ID,
+			Title: post.Title,
+			Body:  post.Body,
+			User: &dto.BlogUser{
+				ID:   post.User.ID,
+				Name: post.User.Name,
+			},
+		})
+	}
+
+	return &dto.BlogPostPagination{
+		List:       posts,
+		Pagination: pagination,
+	}, nil
+}
+
 func (s BlogService) Get(postID uint) (*dto.BlogPost, error) {
 	post, err := s.blogPostRepository.Get(postID)
 	if err != nil {

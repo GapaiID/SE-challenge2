@@ -12,8 +12,13 @@ type BlogPost struct {
 	User  *BlogUser `json:"user"`
 }
 
+type BlogPostQueryParams struct {
+	Q string `json:"q" query:"q"`
+	PaginationParams
+}
+
 type BlogPostPagination struct {
-	List       []BlogPost  `json:"list"`
+	List       []*BlogPost `json:"list"`
 	Pagination *Pagination `json:"pagination"`
 }
 

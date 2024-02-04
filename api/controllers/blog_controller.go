@@ -34,7 +34,24 @@ func NewBlogController(blogService services.BlogService, blogPolicy policies.Blo
 //	@Router			/blog_posts [get]
 //	@Success		200  {object}  response.Response{data=dto.BlogPostPagination}  "ok"
 func (c BlogController) List(ctx echo.Context) error {
-	return ctx.JSON(http.StatusOK, "list")
+	queryParams := new(dto.BlogPostQueryParams)
+	if err := ctx.Bind(queryParams); err != nil {
+		return response.Response{
+			Error: err,
+		}.JSONValidationError(ctx)
+	}
+
+	paginationResp, err := c.blogService.Query(queryParams)
+	if err != nil {
+		return response.Response{
+			Code:    http.StatusBadRequest,
+			Message: err,
+		}.JSON(ctx)
+	}
+
+	return response.Response{
+		Data: paginationResp,
+	}.JSON(ctx)
 }
 
 // Detail godoc
