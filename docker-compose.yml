@@ -1,0 +1,17 @@
+version: '3'
+
+services:
+  db:
+    image: postgres:13-alpine
+    container_name: miblog-db
+    ports:
+      - "5432:5432"
+    volumes:
+      - miblog-db-data:/var/lib/postgresql/data/
+    environment:
+      - POSTGRES_PASSWORD=miblog_password
+      - POSTGRES_USER=miblog_user
+      - POSTGRES_DB=miblog_db
+
+volumes:
+  miblog-db-data: {}

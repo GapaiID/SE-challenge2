@@ -1,0 +1,17 @@
+Name: echo-admin
+SecretKey: foobar
+
+
+HTTP:
+  Host: 127.0.0.1
+  Port: 8000
+
+
+Database:
+  Engine: postgres
+  Name: miblog_db
+  Host: 127.0.0.1
+  Port: 5432
+  Username: miblog_user
+  Password: miblog_password
+  Parameters: sslmode=disable
