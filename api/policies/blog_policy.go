@@ -59,3 +59,11 @@ func (u BlogPolicy) CanDelete(ctx echo.Context, postID uint) error {
 	}
 	return nil
 }
+
+func (u BlogPolicy) CanSeeFollowingPosts(ctx echo.Context) error {
+	user, ok := ctx.Get(constants.CurrentUser).(*models.User)
+	if !ok || user.IsAnonymous() {
+		return appErrors.ErrPolicyUnauthorized
+	}
+	return nil
+}

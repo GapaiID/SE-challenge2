@@ -112,3 +112,28 @@ func (s BlogService) Delete(postID uint) error {
 
 	return nil
 }
+
+func (s BlogService) QueryByFollowing(user *models.User, params *dto.BlogPostQueryParams) (*dto.BlogPostPagination, error) {
+	list, pagination, err := s.blogPostRepository.QueryByFollowing(user, params)
+	if err != nil {
+		return nil, err
+	}
+
+	var posts []*dto.BlogPost
+	for _, post := range *list {
+		posts = append(posts, &dto.BlogPost{
+			ID:    post.ID,
+			Title: post.Title,
+			Body:  post.Body,
+			User: &dto.UserInBlogPost{
+				ID:   post.User.ID,
+				Name: post.User.Name,
+			},
+		})
+	}
+
+	return &dto.BlogPostPagination{
+		List:       posts,
+		Pagination: pagination,
+	}, nil
+}

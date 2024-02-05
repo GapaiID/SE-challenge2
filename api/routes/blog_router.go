@@ -18,6 +18,8 @@ func NewBlogRouter(handler lib.HttpHandler, blogController controllers.BlogContr
 }
 
 func (r BlogRouter) Setup() {
+	r.handler.Engine.GET("/following_blog_posts", r.blogController.FollowingBlogPostList)
+
 	r.handler.Engine.GET("/blog_posts", r.blogController.List)
 	r.handler.Engine.POST("/blog_posts", r.blogController.Create)
 	r.handler.Engine.GET("/blog_posts/:id", r.blogController.Detail)

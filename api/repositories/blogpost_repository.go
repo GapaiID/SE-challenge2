@@ -64,3 +64,25 @@ func (b BlogPostRepository) Update(postID uint, post *models.BlogPost) error {
 func (b BlogPostRepository) Delete(post *models.BlogPost) error {
 	return b.Db.ORM.Delete(&post).Error
 }
+
+func (b BlogPostRepository) QueryByFollowing(user *models.User, params *dto.BlogPostQueryParams) (*models.BlogPosts, *dto.Pagination, error) {
+	db := b.Db.ORM.Model(&models.BlogPosts{}).Preload("User").Where(
+		"user_id IN (SELECT user_id FROM followers WHERE follower_id = ?)", user.ID,
+	)
+
+	if params.Q != "" {
+		db = db.Where("posts.title = ?", params.Q)
+	}
+
+	if params.PaginationParams.PageSize == 0 {
+		params.PaginationParams.PageSize = 5
+	}
+
+	list := make(models.BlogPosts, 0)
+	pagination, err := QueryPagination(db, params.PaginationParams, &list)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	return &list, pagination, nil
+}

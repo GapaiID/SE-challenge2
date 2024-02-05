@@ -212,3 +212,42 @@ func (c BlogController) Delete(ctx echo.Context) error {
 		Code: http.StatusNoContent,
 	}.JSON(ctx)
 }
+
+// FollowingBlogPostList godoc
+//
+//	@Summary		Get Blog Posts by Following
+//	@Description	Get Blog Posts by Following
+//	@Tags			blog
+//	@Accept			application/json
+//	@Produce		application/json
+//	@Router			/following_blog_posts/ [get]
+//	@Security 		BearerAuth
+//	@Success		200  {object}  response.Response{data=dto.BlogPostPagination}  "ok"
+func (c BlogController) FollowingBlogPostList(ctx echo.Context) error {
+	queryParams := new(dto.BlogPostQueryParams)
+	if err := ctx.Bind(queryParams); err != nil {
+		return response.Response{
+			Error: err,
+		}.JSONValidationError(ctx)
+	}
+
+	err := c.blogPolicy.CanSeeFollowingPosts(ctx)
+	if err != nil {
+		return response.Response{
+			Error: err,
+		}.JSONPolicyError(ctx)
+	}
+
+	user := ctx.Get(constants.CurrentUser).(*models.User)
+	paginationResp, err := c.blogService.QueryByFollowing(user, queryParams)
+	if err != nil {
+		return response.Response{
+			Code:    http.StatusBadRequest,
+			Message: err,
+		}.JSON(ctx)
+	}
+
+	return response.Response{
+		Data: paginationResp,
+	}.JSON(ctx)
+}

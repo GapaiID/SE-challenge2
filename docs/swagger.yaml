@@ -8,7 +8,7 @@ definitions:
       title:
         type: string
       user:
-        $ref: '#/definitions/dto.BlogUser'
+        $ref: '#/definitions/dto.UserInBlogPost'
     type: object
   dto.BlogPostCreateResponse:
     properties:
@@ -35,13 +35,6 @@ definitions:
       id:
         type: integer
       title:
-        type: string
-    type: object
-  dto.BlogUser:
-    properties:
-      id:
-        type: integer
-      name:
         type: string
     type: object
   dto.Comment:
@@ -171,6 +164,13 @@ definitions:
         type: string
     type: object
   dto.User:
+    properties:
+      id:
+        type: integer
+      name:
+        type: string
+    type: object
+  dto.UserInBlogPost:
     properties:
       id:
         type: integer
@@ -397,6 +397,28 @@ paths:
       summary: Update a Comment
       tags:
       - comment
+  /following_blog_posts/:
+    get:
+      consumes:
+      - application/json
+      description: Get Blog Posts by Following
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: ok
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/dto.BlogPostPagination'
+              type: object
+      security:
+      - BearerAuth: []
+      summary: Get Blog Posts by Following
+      tags:
+      - blog
   /login:
     post:
       consumes:

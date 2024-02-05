@@ -359,6 +359,46 @@ const docTemplate = `{
                 }
             }
         },
+        "/following_blog_posts/": {
+            "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Get Blog Posts by Following",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "blog"
+                ],
+                "summary": "Get Blog Posts by Following",
+                "responses": {
+                    "200": {
+                        "description": "ok",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.Response"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/dto.BlogPostPagination"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
         "/login": {
             "post": {
                 "description": "Login user and get response JWT Token",
@@ -705,7 +745,7 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "user": {
-                    "$ref": "#/definitions/dto.BlogUser"
+                    "$ref": "#/definitions/dto.UserInBlogPost"
                 }
             }
         },
@@ -747,17 +787,6 @@ const docTemplate = `{
                     "type": "integer"
                 },
                 "title": {
-                    "type": "string"
-                }
-            }
-        },
-        "dto.BlogUser": {
-            "type": "object",
-            "properties": {
-                "id": {
-                    "type": "integer"
-                },
-                "name": {
                     "type": "string"
                 }
             }
@@ -950,6 +979,17 @@ const docTemplate = `{
             }
         },
         "dto.User": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "integer"
+                },
+                "name": {
+                    "type": "string"
+                }
+            }
+        },
+        "dto.UserInBlogPost": {
             "type": "object",
             "properties": {
                 "id": {
