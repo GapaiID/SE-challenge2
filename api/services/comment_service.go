@@ -105,10 +105,10 @@ func (s CommentService) Update(userID *models.User, commentID uint, commentReq *
 }
 
 func (s CommentService) Delete(commentID uint) error {
-	var post models.Comment
-	post.ID = commentID
+	var comment models.Comment
+	comment.ID = commentID
 
-	err := s.commentRepository.Delete(&post)
+	err := s.commentRepository.Delete(&comment)
 	if err != nil {
 		return err
 	}
