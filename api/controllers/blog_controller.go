@@ -95,7 +95,7 @@ func (c BlogController) Detail(ctx echo.Context) error {
 //	@Produce		application/json
 //	@Router			/blog_posts [post]
 //	@Security 		BearerAuth
-//	@Success		201  {object}  response.Response{data=dto.BlogPostCreateRequest}  "created"
+//	@Success		201  {object}  response.Response{data=dto.BlogPostCreateResponse}  "created"
 func (c BlogController) Create(ctx echo.Context) error {
 	err := c.blogPolicy.CanCreate(ctx)
 	if err != nil {
@@ -135,9 +135,43 @@ func (c BlogController) Create(ctx echo.Context) error {
 //	@Produce		application/json
 //	@Router			/blog_posts/{id} [patch]
 //	@Security 		BearerAuth
-//	@Success		200  {object}  response.Response{data=dto.BlogPost}  "ok"
+//	@Success		200  {object}  response.Response{data=dto.BlogPostUpdateResponse}  "ok"
 func (c BlogController) Update(ctx echo.Context) error {
-	return ctx.JSON(http.StatusOK, "update")
+	postID, err := strconv.ParseUint(ctx.Param("id"), 10, 32)
+	if err != nil {
+		return response.Response{
+			Code:    http.StatusInternalServerError,
+			Message: err,
+		}.JSON(ctx)
+	}
+
+	err = c.blogPolicy.CanUpdate(ctx, uint(postID))
+	if err != nil {
+		return response.Response{
+			Error: err,
+		}.JSONPolicyError(ctx)
+	}
+
+	postReq := new(dto.BlogPostUpdateRequest)
+	if err := ctx.Bind(postReq); err != nil {
+		return response.Response{
+			Error: err,
+		}.JSONValidationError(ctx)
+	}
+
+	user := ctx.Get(constants.CurrentUser).(*models.User)
+	postResp, err := c.blogService.Update(user, uint(postID), postReq)
+	if err != nil {
+		return response.Response{
+			Code:    http.StatusBadRequest,
+			Message: err,
+		}.JSON(ctx)
+	}
+
+	return response.Response{
+		Code: http.StatusOK,
+		Data: postResp,
+	}.JSON(ctx)
 }
 
 // Delete godoc

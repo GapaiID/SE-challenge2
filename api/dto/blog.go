@@ -32,3 +32,14 @@ type BlogPostCreateResponse struct {
 	Title string `json:"title"`
 	Body  string `json:"body"`
 }
+
+type BlogPostUpdateRequest struct {
+	Title string `json:"title" validate:"min=10,max=200"`
+	Body  string `json:"body" validate:"min=10"`
+}
+
+type BlogPostUpdateResponse struct {
+	ID    uint   `json:"id"`
+	Title string `json:"title"`
+	Body  string `json:"body"`
+}

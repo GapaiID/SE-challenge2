@@ -77,6 +77,30 @@ func (s BlogService) Create(user *models.User, postReq *dto.BlogPostCreateReques
 	}, nil
 }
 
+func (s BlogService) Update(userID *models.User, postID uint, postReq *dto.BlogPostUpdateRequest) (*dto.BlogPostUpdateResponse, error) {
+	post, err := s.blogPostRepository.Get(postID)
+	if err != nil {
+		return nil, err
+	}
+
+	if postReq.Title != "" {
+		post.Title = postReq.Title
+	}
+	if postReq.Body != "" {
+		post.Body = postReq.Body
+	}
+
+	if err := s.blogPostRepository.Update(postID, post); err != nil {
+		return nil, err
+	}
+
+	return &dto.BlogPostUpdateResponse{
+		ID:    post.ID,
+		Title: post.Title,
+		Body:  post.Body,
+	}, nil
+}
+
 func (s BlogService) Delete(postID uint) error {
 	var post models.BlogPost
 	post.ID = postID

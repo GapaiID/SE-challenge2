@@ -53,6 +53,14 @@ func (b BlogPostRepository) Create(post *models.BlogPost) error {
 	return nil
 }
 
+func (b BlogPostRepository) Update(postID uint, post *models.BlogPost) error {
+	err := b.Db.ORM.Where("id = ?", postID).Updates(post).Error
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
 func (b BlogPostRepository) Delete(post *models.BlogPost) error {
 	return b.Db.ORM.Delete(&post).Error
 }
