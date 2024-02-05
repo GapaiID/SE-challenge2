@@ -51,6 +51,13 @@ definitions:
         $ref: '#/definitions/dto.UserInComment'
     type: object
   dto.CommentCreateResponse:
+    properties:
+      body:
+        type: string
+      id:
+        type: integer
+      post_id:
+        type: integer
     type: object
   dto.CommentPagination:
     properties:

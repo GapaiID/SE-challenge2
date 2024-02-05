@@ -64,8 +64,23 @@ func (s CommentService) Get(commentID uint) (*dto.Comment, error) {
 	}, nil
 }
 
-func (s CommentService) Create(user *models.User, postReq *dto.BlogPostCreateRequest) (*dto.BlogPostCreateResponse, error) {
-	return nil, nil
+func (s CommentService) Create(user *models.User, commentReq *dto.CommentCreateRequest) (*dto.CommentCreateResponse, error) {
+	var comment models.Comment
+
+	comment.Body = commentReq.Body
+	comment.PostID = commentReq.PostID
+	comment.UserID = user.ID
+
+	err := s.commentRepository.Create(&comment)
+	if err != nil {
+		return nil, err
+	}
+
+	return &dto.CommentCreateResponse{
+		ID:     comment.ID,
+		Body:   comment.Body,
+		PostID: comment.PostID,
+	}, nil
 }
 
 func (s CommentService) Delete(commentID uint) error {

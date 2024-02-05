@@ -29,9 +29,14 @@ type CommentPagination struct {
 }
 
 type CommentCreateRequest struct {
+	Body   string `json:"body" validate:"required,min=10,max=500"`
+	PostID uint   `json:"post_id" validate:"required,gte=0"`
 }
 
 type CommentCreateResponse struct {
+	ID     uint   `json:"id"`
+	Body   string `json:"body"`
+	PostID uint   `json:"post_id"`
 }
 
 type CommentUpdateRequest struct {

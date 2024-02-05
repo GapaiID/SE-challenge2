@@ -692,7 +692,18 @@ const docTemplate = `{
             }
         },
         "dto.CommentCreateResponse": {
-            "type": "object"
+            "type": "object",
+            "properties": {
+                "body": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "post_id": {
+                    "type": "integer"
+                }
+            }
         },
         "dto.CommentPagination": {
             "type": "object",

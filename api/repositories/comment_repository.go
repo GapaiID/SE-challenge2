@@ -45,7 +45,11 @@ func (b CommentRepository) Get(id uint) (*models.Comment, error) {
 	return &comment, nil
 }
 
-func (b CommentRepository) Create(post *models.Comment) error {
+func (b CommentRepository) Create(comment *models.Comment) error {
+	err := b.Db.ORM.Create(&comment).Error
+	if err != nil {
+		return err
+	}
 	return nil
 }
 

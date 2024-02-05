@@ -2,8 +2,10 @@ package controllers
 
 import (
 	"github.com/agung96tm/miblog/api/dto"
+	"github.com/agung96tm/miblog/api/models"
 	"github.com/agung96tm/miblog/api/policies"
 	"github.com/agung96tm/miblog/api/services"
+	"github.com/agung96tm/miblog/constants"
 	"github.com/agung96tm/miblog/pkg/response"
 	"github.com/labstack/echo/v4"
 	"net/http"
@@ -95,7 +97,33 @@ func (c CommentController) Detail(ctx echo.Context) error {
 //	@Security 		BearerAuth
 //	@Success		201  {object}  response.Response{data=dto.CommentCreateResponse}  "created"
 func (c CommentController) Create(ctx echo.Context) error {
-	return ctx.JSON(http.StatusOK, "create")
+	err := c.commentPolicy.CanCreate(ctx)
+	if err != nil {
+		return response.Response{
+			Error: err,
+		}.JSONPolicyError(ctx)
+	}
+
+	commentReq := new(dto.CommentCreateRequest)
+	if err := ctx.Bind(commentReq); err != nil {
+		return response.Response{
+			Error: err,
+		}.JSONValidationError(ctx)
+	}
+
+	user := ctx.Get(constants.CurrentUser).(*models.User)
+	postResp, err := c.commentService.Create(user, commentReq)
+	if err != nil {
+		return response.Response{
+			Code:    http.StatusBadRequest,
+			Message: err,
+		}.JSON(ctx)
+	}
+
+	return response.Response{
+		Code: http.StatusCreated,
+		Data: postResp,
+	}.JSON(ctx)
 }
 
 // Update godoc

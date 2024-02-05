@@ -38,6 +38,8 @@ func MessageForTag(fe validator.FieldError) string {
 }
 
 func (a Response) JSONValidationError(ctx echo.Context) error {
+	a.Code = http.StatusBadRequest
+
 	if err, ok := a.Error.(validator.ValidationErrors); ok && err != nil {
 		var validationErrors []ValidationError
 
@@ -49,8 +51,8 @@ func (a Response) JSONValidationError(ctx echo.Context) error {
 		}
 
 		a.Data = validationErrors
-		a.Code = http.StatusBadRequest
-		return a.JSON(ctx)
+	} else {
+		a.Message = a.Error.Error()
 	}
 
 	return a.JSON(ctx)

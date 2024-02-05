@@ -19,6 +19,10 @@ func NewCommentPolicy(commentService services.CommentService) CommentPolicy {
 }
 
 func (u CommentPolicy) CanCreate(ctx echo.Context) error {
+	user, ok := ctx.Get(constants.CurrentUser).(*models.User)
+	if !ok || user.IsAnonymous() {
+		return appErrors.ErrPolicyUnauthorized
+	}
 	return nil
 }
 
