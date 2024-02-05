@@ -19,8 +19,21 @@ type Comment struct {
 }
 
 type CommentQueryParams struct {
-	Q string `json:"q" query:"q"`
+	SearchFilter
+	OrderFilter
 	PaginationParams
+}
+
+func (q CommentQueryParams) SearchFields() []string {
+	return []string{"body"}
+}
+
+func (q CommentQueryParams) OrderFields() []string {
+	return []string{"id"}
+}
+
+func (q CommentQueryParams) DefaultPageSize() int {
+	return 10
 }
 
 type CommentPagination struct {

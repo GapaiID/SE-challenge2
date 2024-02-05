@@ -19,13 +19,9 @@ func NewCommentRepository(db lib.Database) CommentRepository {
 func (b CommentRepository) Query(params *dto.CommentQueryParams) (*models.Comments, *dto.Pagination, error) {
 	db := b.Db.ORM.Preload("User").Preload("Post").Model(&models.Comments{})
 
-	if params.Q != "" {
-		db = db.Where("title = ?", params.Q)
-	}
-
-	if params.PaginationParams.PageSize == 0 {
-		params.PaginationParams.PageSize = 5
-	}
+	db = db.Where(params.GetSearch(params.SearchFields()))
+	db = db.Order(params.ParseOrderFilter(params.OrderFields()))
+	params.SetDefaultPageSize(params.DefaultPageSize())
 
 	list := make(models.Comments, 0)
 	pagination, err := QueryPagination(db, params.PaginationParams, &list)

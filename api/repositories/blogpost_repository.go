@@ -19,13 +19,9 @@ func NewBlogPostRepository(db lib.Database) BlogPostRepository {
 func (b BlogPostRepository) Query(params *dto.BlogPostQueryParams) (*models.BlogPosts, *dto.Pagination, error) {
 	db := b.Db.ORM.Preload("User").Model(&models.BlogPosts{})
 
-	if params.Q != "" {
-		db = db.Where("title = ?", params.Q)
-	}
-
-	if params.PaginationParams.PageSize == 0 {
-		params.PaginationParams.PageSize = 5
-	}
+	db = db.Where(params.GetSearch(params.SearchFields()))
+	db = db.Order(params.ParseOrderFilter(params.OrderFields()))
+	params.SetDefaultPageSize(params.DefaultPageSize())
 
 	list := make(models.BlogPosts, 0)
 	pagination, err := QueryPagination(db, params.PaginationParams, &list)

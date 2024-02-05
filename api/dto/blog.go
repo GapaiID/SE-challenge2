@@ -13,8 +13,21 @@ type BlogPost struct {
 }
 
 type BlogPostQueryParams struct {
-	Q string `json:"q" query:"q"`
+	SearchFilter
+	OrderFilter
 	PaginationParams
+}
+
+func (q BlogPostQueryParams) SearchFields() []string {
+	return []string{"title", "body"}
+}
+
+func (q BlogPostQueryParams) OrderFields() []string {
+	return []string{"id"}
+}
+
+func (q BlogPostQueryParams) DefaultPageSize() int {
+	return 10
 }
 
 type BlogPostPagination struct {

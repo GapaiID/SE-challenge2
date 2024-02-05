@@ -10,3 +10,9 @@ type PaginationParams struct {
 	Current  int `json:"current" query:"current"`
 	PageSize int `json:"page_size" query:"page_size"`
 }
+
+func (p *PaginationParams) SetDefaultPageSize(pageSize int) {
+	if p.PageSize == 0 {
+		p.PageSize = pageSize
+	}
+}

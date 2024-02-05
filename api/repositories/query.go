@@ -7,6 +7,7 @@ import (
 
 func QueryPagination(db *gorm.DB, pp dto.PaginationParams, out interface{}) (*dto.Pagination, error) {
 	pagination := new(dto.Pagination)
+
 	total, err := QueryPage(db, pp, out)
 	if err != nil {
 		return pagination, err
