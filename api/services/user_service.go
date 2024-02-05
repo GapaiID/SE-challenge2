@@ -8,12 +8,14 @@ import (
 )
 
 type UserService struct {
-	userRepository repositories.UserRepository
+	userRepository     repositories.UserRepository
+	followerRepository repositories.FollowerRepository
 }
 
-func NewUserService(userRepository repositories.UserRepository) UserService {
+func NewUserService(userRepository repositories.UserRepository, followerRepository repositories.FollowerRepository) UserService {
 	return UserService{
-		userRepository: userRepository,
+		userRepository:     userRepository,
+		followerRepository: followerRepository,
 	}
 }
 
@@ -58,4 +60,26 @@ func (s UserService) Get(id uint) (*dto.User, error) {
 		ID:   user.ID,
 		Name: user.Name,
 	}, nil
+}
+
+func (s UserService) Follow(user *models.User, followReq *dto.FollowerCreateRequest) error {
+	if user.ID == followReq.UserID {
+		return errors.New("cannot follow yourself")
+	}
+
+	err := s.followerRepository.HasFollowing(user.ID, followReq.UserID)
+	if err != nil {
+		return err
+	}
+
+	var follower models.Follower
+	follower.UserID = followReq.UserID
+	follower.FollowerID = user.ID
+
+	err = s.followerRepository.Create(&follower)
+	if err != nil {
+		return err
+	}
+
+	return nil
 }

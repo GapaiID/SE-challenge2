@@ -7,4 +7,5 @@ var Module = fx.Module(
 	fx.Provide(NewUserRepository),
 	fx.Provide(NewBlogPostRepository),
 	fx.Provide(NewCommentRepository),
+	fx.Provide(NewFollowerRepository),
 )

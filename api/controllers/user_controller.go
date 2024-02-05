@@ -3,6 +3,7 @@ package controllers
 import (
 	"github.com/agung96tm/miblog/api/dto"
 	"github.com/agung96tm/miblog/api/models"
+	"github.com/agung96tm/miblog/api/policies"
 	"github.com/agung96tm/miblog/api/services"
 	"github.com/agung96tm/miblog/constants"
 	"github.com/agung96tm/miblog/pkg/response"
@@ -14,12 +15,14 @@ import (
 type UserController struct {
 	authService services.AuthService
 	userService services.UserService
+	userPolicy  policies.UserPolicy
 }
 
-func NewUserController(authService services.AuthService, userService services.UserService) UserController {
+func NewUserController(authService services.AuthService, userService services.UserService, userPolicy policies.UserPolicy) UserController {
 	return UserController{
 		authService: authService,
 		userService: userService,
+		userPolicy:  userPolicy,
 	}
 }
 
@@ -154,6 +157,42 @@ func (c UserController) Detail(ctx echo.Context) error {
 	}.JSON(ctx)
 }
 
+// Follow godoc
+//
+//	@Summary		Following User
+//	@Description	Following User
+//	@Tags			user
+//	@Accept			application/json
+//	@Produce		application/json
+//	@Router			/users/{id}/follow [post]
+//	@Security 		BearerAuth
+//	@Success		202  {object}  response.Response{}  "accepted"
 func (c UserController) Follow(ctx echo.Context) error {
-	return ctx.JSON(http.StatusOK, "follow")
+	userID, err := strconv.ParseUint(ctx.Param("id"), 10, 32)
+	if err != nil {
+		return response.Response{
+			Code:    http.StatusInternalServerError,
+			Message: err,
+		}.JSON(ctx)
+	}
+
+	err = c.userPolicy.CanFollow(ctx)
+	if err != nil {
+		return response.Response{
+			Error: err,
+		}.JSONPolicyError(ctx)
+	}
+
+	followReq := &dto.FollowerCreateRequest{UserID: uint(userID)}
+	user := ctx.Get(constants.CurrentUser).(*models.User)
+	if err := c.userService.Follow(user, followReq); err != nil {
+		return response.Response{
+			Code:    http.StatusBadRequest,
+			Message: err,
+		}.JSON(ctx)
+	}
+
+	return response.Response{
+		Code: http.StatusAccepted,
+	}.JSON(ctx)
 }

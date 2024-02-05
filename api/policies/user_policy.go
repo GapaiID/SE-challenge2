@@ -28,3 +28,11 @@ func (u UserPolicy) CanUpdate(ctx echo.Context, userID uint) (bool, error) {
 	}
 	return false, nil
 }
+
+func (u UserPolicy) CanFollow(ctx echo.Context) error {
+	user, ok := ctx.Get(constants.CurrentUser).(*models.User)
+	if !ok || user.IsAnonymous() {
+		return appErrors.ErrPolicyUnauthorized
+	}
+	return nil
+}

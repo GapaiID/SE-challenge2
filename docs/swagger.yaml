@@ -565,6 +565,23 @@ paths:
       summary: Get Detail User
       tags:
       - user
+  /users/{id}/follow:
+    post:
+      consumes:
+      - application/json
+      description: Following User
+      produces:
+      - application/json
+      responses:
+        "202":
+          description: accepted
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - BearerAuth: []
+      summary: Following User
+      tags:
+      - user
 securityDefinitions:
   BearerAuth:
     in: header
