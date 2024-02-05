@@ -78,7 +78,7 @@ const docTemplate = `{
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/definitions/dto.BlogPostCreateRequest"
+                                            "$ref": "#/definitions/dto.BlogPostCreateResponse"
                                         }
                                     }
                                 }
@@ -177,7 +177,7 @@ const docTemplate = `{
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/definitions/dto.BlogPost"
+                                            "$ref": "#/definitions/dto.BlogPostUpdateResponse"
                                         }
                                     }
                                 }
@@ -338,8 +338,8 @@ const docTemplate = `{
                 ],
                 "summary": "Update a Comment",
                 "responses": {
-                    "201": {
-                        "description": "created",
+                    "200": {
+                        "description": "ok",
                         "schema": {
                             "allOf": [
                                 {
@@ -631,21 +631,17 @@ const docTemplate = `{
                 }
             }
         },
-        "dto.BlogPostCreateRequest": {
+        "dto.BlogPostCreateResponse": {
             "type": "object",
-            "required": [
-                "body",
-                "title"
-            ],
             "properties": {
                 "body": {
-                    "type": "string",
-                    "minLength": 10
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
                 },
                 "title": {
-                    "type": "string",
-                    "maxLength": 200,
-                    "minLength": 10
+                    "type": "string"
                 }
             }
         },
@@ -660,6 +656,20 @@ const docTemplate = `{
                 },
                 "pagination": {
                     "$ref": "#/definitions/dto.Pagination"
+                }
+            }
+        },
+        "dto.BlogPostUpdateResponse": {
+            "type": "object",
+            "properties": {
+                "body": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "title": {
+                    "type": "string"
                 }
             }
         },

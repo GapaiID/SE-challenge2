@@ -135,7 +135,7 @@ func (c CommentController) Create(ctx echo.Context) error {
 //	@Produce		application/json
 //	@Router			/comments/{id} [patch]
 //	@Security 		BearerAuth
-//	@Success		201  {object}  response.Response{data=dto.CommentUpdateResponse}  "created"
+//	@Success		200  {object}  response.Response{data=dto.CommentUpdateResponse}  "ok"
 func (c CommentController) Update(ctx echo.Context) error {
 	commentID, err := strconv.ParseUint(ctx.Param("id"), 10, 32)
 	if err != nil {
@@ -169,7 +169,7 @@ func (c CommentController) Update(ctx echo.Context) error {
 	}
 
 	return response.Response{
-		Code: http.StatusCreated,
+		Code: http.StatusOK,
 		Data: postResp,
 	}.JSON(ctx)
 }

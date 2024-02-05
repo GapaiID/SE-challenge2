@@ -10,18 +10,14 @@ definitions:
       user:
         $ref: '#/definitions/dto.BlogUser'
     type: object
-  dto.BlogPostCreateRequest:
+  dto.BlogPostCreateResponse:
     properties:
       body:
-        minLength: 10
         type: string
+      id:
+        type: integer
       title:
-        maxLength: 200
-        minLength: 10
         type: string
-    required:
-    - body
-    - title
     type: object
   dto.BlogPostPagination:
     properties:
@@ -31,6 +27,15 @@ definitions:
         type: array
       pagination:
         $ref: '#/definitions/dto.Pagination'
+    type: object
+  dto.BlogPostUpdateResponse:
+    properties:
+      body:
+        type: string
+      id:
+        type: integer
+      title:
+        type: string
     type: object
   dto.BlogUser:
     properties:
@@ -223,7 +228,7 @@ paths:
             - $ref: '#/definitions/response.Response'
             - properties:
                 data:
-                  $ref: '#/definitions/dto.BlogPostCreateRequest'
+                  $ref: '#/definitions/dto.BlogPostCreateResponse'
               type: object
       security:
       - BearerAuth: []
@@ -280,7 +285,7 @@ paths:
             - $ref: '#/definitions/response.Response'
             - properties:
                 data:
-                  $ref: '#/definitions/dto.BlogPost'
+                  $ref: '#/definitions/dto.BlogPostUpdateResponse'
               type: object
       security:
       - BearerAuth: []
@@ -371,8 +376,8 @@ paths:
       produces:
       - application/json
       responses:
-        "201":
-          description: created
+        "200":
+          description: ok
           schema:
             allOf:
             - $ref: '#/definitions/response.Response'
