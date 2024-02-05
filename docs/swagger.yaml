@@ -454,6 +454,8 @@ paths:
                 data:
                   $ref: '#/definitions/dto.MeResponse'
               type: object
+      security:
+      - BearerAuth: []
       summary: Get data Logged-in user
       tags:
       - user
@@ -480,6 +482,8 @@ paths:
                 data:
                   $ref: '#/definitions/dto.MeResponse'
               type: object
+      security:
+      - BearerAuth: []
       summary: Update data Logged-in user
       tags:
       - user
@@ -502,6 +506,8 @@ paths:
           description: ok
           schema:
             $ref: '#/definitions/response.Response'
+      security:
+      - BearerAuth: []
       summary: Get data Logged-in user
       tags:
       - user

@@ -34,6 +34,7 @@ func NewUserController(authService services.AuthService, userService services.Us
 //	@Accept			application/json
 //	@Produce		application/json
 //	@Router			/me [get]
+//	@Security 		BearerAuth
 //	@Success		200  {object}  response.Response{data=dto.MeResponse}  "ok"
 func (c UserController) Me(ctx echo.Context) error {
 	user := ctx.Get(constants.CurrentUser).(*models.User)
@@ -58,6 +59,7 @@ func (c UserController) Me(ctx echo.Context) error {
 //	@Produce		application/json
 //	@Param 			data body dto.MePasswordRequest true "Post"
 //	@Router			/me/password [post]
+//	@Security 		BearerAuth
 //	@Success		200  {object}  response.Response{}  "ok"
 func (c UserController) MePassword(ctx echo.Context) error {
 	user := ctx.Get(constants.CurrentUser).(*models.User)
@@ -96,6 +98,7 @@ func (c UserController) MePassword(ctx echo.Context) error {
 //	@Produce		application/json
 //	@Param 			data body dto.MeUpdateRequest true "Post"
 //	@Router			/me [patch]
+//	@Security 		BearerAuth
 //	@Success		200  {object}  response.Response{data=dto.MeResponse}  "ok"
 func (c UserController) MeUpdate(ctx echo.Context) error {
 	user := ctx.Get(constants.CurrentUser).(*models.User)

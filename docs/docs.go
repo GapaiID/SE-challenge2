@@ -431,6 +431,11 @@ const docTemplate = `{
         },
         "/me": {
             "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Get data Logged-in user",
                 "consumes": [
                     "application/json"
@@ -464,6 +469,11 @@ const docTemplate = `{
                 }
             },
             "patch": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Update data Logged-in user",
                 "consumes": [
                     "application/json"
@@ -510,6 +520,11 @@ const docTemplate = `{
         },
         "/me/password": {
             "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Get data Logged-in user",
                 "consumes": [
                     "application/json"
