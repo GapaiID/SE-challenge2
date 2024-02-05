@@ -1,15 +1,15 @@
 package dto
 
-type BlogUser struct {
+type UserInBlogPost struct {
 	ID   uint   `json:"id"`
 	Name string `json:"name"`
 }
 
 type BlogPost struct {
-	ID    uint      `json:"id"`
-	Title string    `json:"title"`
-	Body  string    `json:"body"`
-	User  *BlogUser `json:"user"`
+	ID    uint            `json:"id"`
+	Title string          `json:"title"`
+	Body  string          `json:"body"`
+	User  *UserInBlogPost `json:"user"`
 }
 
 type BlogPostQueryParams struct {

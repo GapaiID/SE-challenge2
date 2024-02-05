@@ -28,7 +28,7 @@ func (s BlogService) Query(params *dto.BlogPostQueryParams) (any, error) {
 			ID:    post.ID,
 			Title: post.Title,
 			Body:  post.Body,
-			User: &dto.BlogUser{
+			User: &dto.UserInBlogPost{
 				ID:   post.User.ID,
 				Name: post.User.Name,
 			},
@@ -51,7 +51,7 @@ func (s BlogService) Get(postID uint) (*dto.BlogPost, error) {
 		ID:    post.ID,
 		Title: post.Title,
 		Body:  post.Body,
-		User: &dto.BlogUser{
+		User: &dto.UserInBlogPost{
 			ID:   post.User.ID,
 			Name: post.User.Name,
 		},
