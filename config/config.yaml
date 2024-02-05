@@ -15,3 +15,8 @@ Database:
   Username: miblog_user
   Password: miblog_password
   Parameters: sslmode=disable
+
+Redis:
+  Host: 127.0.0.1
+  Port: 6379
+  KeyPrefix: r

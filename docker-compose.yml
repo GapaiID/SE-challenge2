@@ -13,5 +13,11 @@ services:
       - POSTGRES_USER=miblog_user
       - POSTGRES_DB=miblog_db
 
+  redis:
+    image: "redis:6.2.6-alpine"
+    container_name: miblog-redis
+    ports:
+      - '6379:6379'
+
 volumes:
   miblog-db-data: {}

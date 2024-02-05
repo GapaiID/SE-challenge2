@@ -36,6 +36,7 @@ var defaultConfig = Config{
 		Description: "Miblog Endpoints",
 		Version:     "1.0",
 	},
+	Redis: &RedisConfig{Host: "127.0.0.1", Port: 6379},
 }
 
 func NewConfig() Config {
@@ -61,6 +62,17 @@ type Config struct {
 	JWT      *JWTConfig      `mapstructure:"jwt"`
 	Mail     *MailConfig     `mapstructure:"mail"`
 	Swagger  *SwaggerConfig  `mapstructure:"swagger"`
+	Redis    *RedisConfig    `mapstructure:"redis"`
+}
+
+type RedisConfig struct {
+	Host      string `mapstructure:"Host"`
+	Port      int    `mapstructure:"Port"`
+	KeyPrefix string `mapstructure:"KeyPrefix"`
+}
+
+func (a *RedisConfig) Addr() string {
+	return fmt.Sprintf("%s:%d", a.Host, a.Port)
 }
 
 type SwaggerConfig struct {
