@@ -130,14 +130,48 @@ func (c CommentController) Create(ctx echo.Context) error {
 //
 //	@Summary		Update a Comment
 //	@Description	Update a Comment
-//	@Tags			blog
+//	@Tags			comment
 //	@Accept			application/json
 //	@Produce		application/json
 //	@Router			/comments/{id} [patch]
 //	@Security 		BearerAuth
 //	@Success		201  {object}  response.Response{data=dto.CommentUpdateResponse}  "created"
 func (c CommentController) Update(ctx echo.Context) error {
-	return ctx.JSON(http.StatusOK, "update")
+	commentID, err := strconv.ParseUint(ctx.Param("id"), 10, 32)
+	if err != nil {
+		return response.Response{
+			Code:    http.StatusInternalServerError,
+			Message: err,
+		}.JSON(ctx)
+	}
+
+	err = c.commentPolicy.CanUpdate(ctx, uint(commentID))
+	if err != nil {
+		return response.Response{
+			Error: err,
+		}.JSONPolicyError(ctx)
+	}
+
+	commentReq := new(dto.CommentUpdateRequest)
+	if err := ctx.Bind(commentReq); err != nil {
+		return response.Response{
+			Error: err,
+		}.JSONValidationError(ctx)
+	}
+
+	user := ctx.Get(constants.CurrentUser).(*models.User)
+	postResp, err := c.commentService.Update(user, uint(commentID), commentReq)
+	if err != nil {
+		return response.Response{
+			Code:    http.StatusBadRequest,
+			Message: err,
+		}.JSON(ctx)
+	}
+
+	return response.Response{
+		Code: http.StatusCreated,
+		Data: postResp,
+	}.JSON(ctx)
 }
 
 // Delete godoc

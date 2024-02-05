@@ -334,7 +334,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "blog"
+                    "comment"
                 ],
                 "summary": "Update a Comment",
                 "responses": {
@@ -720,7 +720,18 @@ const docTemplate = `{
             }
         },
         "dto.CommentUpdateResponse": {
-            "type": "object"
+            "type": "object",
+            "properties": {
+                "body": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "post_id": {
+                    "type": "integer"
+                }
+            }
         },
         "dto.LoginRequest": {
             "type": "object",

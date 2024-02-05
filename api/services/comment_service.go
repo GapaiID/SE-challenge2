@@ -83,6 +83,27 @@ func (s CommentService) Create(user *models.User, commentReq *dto.CommentCreateR
 	}, nil
 }
 
+func (s CommentService) Update(userID *models.User, commentID uint, commentReq *dto.CommentUpdateRequest) (*dto.CommentUpdateResponse, error) {
+	comment, err := s.commentRepository.Get(commentID)
+	if err != nil {
+		return nil, err
+	}
+
+	if commentReq.Body != "" {
+		comment.Body = commentReq.Body
+	}
+
+	if err := s.commentRepository.Update(commentID, comment); err != nil {
+		return nil, err
+	}
+
+	return &dto.CommentUpdateResponse{
+		ID:     comment.ID,
+		Body:   comment.Body,
+		PostID: comment.PostID,
+	}, nil
+}
+
 func (s CommentService) Delete(commentID uint) error {
 	var post models.Comment
 	post.ID = commentID

@@ -40,7 +40,11 @@ type CommentCreateResponse struct {
 }
 
 type CommentUpdateRequest struct {
+	Body string `json:"body" validate:"min=10,max=500"`
 }
 
 type CommentUpdateResponse struct {
+	ID     uint   `json:"id"`
+	Body   string `json:"body"`
+	PostID uint   `json:"post_id"`
 }

@@ -69,6 +69,13 @@ definitions:
         $ref: '#/definitions/dto.Pagination'
     type: object
   dto.CommentUpdateResponse:
+    properties:
+      body:
+        type: string
+      id:
+        type: integer
+      post_id:
+        type: integer
     type: object
   dto.LoginRequest:
     properties:
@@ -377,7 +384,7 @@ paths:
       - BearerAuth: []
       summary: Update a Comment
       tags:
-      - blog
+      - comment
   /login:
     post:
       consumes:

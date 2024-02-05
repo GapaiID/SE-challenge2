@@ -53,6 +53,14 @@ func (b CommentRepository) Create(comment *models.Comment) error {
 	return nil
 }
 
+func (b CommentRepository) Update(commentID uint, comment *models.Comment) error {
+	err := b.Db.ORM.Where("id = ?", commentID).Updates(comment).Error
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
 func (b CommentRepository) Delete(post *models.Comment) error {
 	return b.Db.ORM.Delete(&post).Error
 }

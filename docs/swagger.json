@@ -323,7 +323,7 @@
                     "application/json"
                 ],
                 "tags": [
-                    "blog"
+                    "comment"
                 ],
                 "summary": "Update a Comment",
                 "responses": {
@@ -709,7 +709,18 @@
             }
         },
         "dto.CommentUpdateResponse": {
-            "type": "object"
+            "type": "object",
+            "properties": {
+                "body": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "post_id": {
+                    "type": "integer"
+                }
+            }
         },
         "dto.LoginRequest": {
             "type": "object",
