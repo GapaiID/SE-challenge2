@@ -18,3 +18,8 @@ type MePasswordRequest struct {
 func (d MePasswordRequest) PasswordMatches() bool {
 	return d.NewPassword == d.ConfirmPassword
 }
+
+type User struct {
+	ID   uint   `json:"id"`
+	Name string `json:"name"`
+}

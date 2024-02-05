@@ -47,3 +47,15 @@ func (s UserService) MeUpdate(user *models.User, meReq *dto.MeUpdateRequest) err
 
 	return nil
 }
+
+func (s UserService) Get(id uint) (*dto.User, error) {
+	user, err := s.userRepository.Get(id)
+	if err != nil {
+		return nil, err
+	}
+
+	return &dto.User{
+		ID:   user.ID,
+		Name: user.Name,
+	}, nil
+}

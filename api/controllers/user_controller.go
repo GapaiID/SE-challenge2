@@ -8,6 +8,7 @@ import (
 	"github.com/agung96tm/miblog/pkg/response"
 	"github.com/labstack/echo/v4"
 	"net/http"
+	"strconv"
 )
 
 type UserController struct {
@@ -120,4 +121,39 @@ func (c UserController) MeUpdate(ctx echo.Context) error {
 		Name:  user.Name,
 		Email: user.Email,
 	})
+}
+
+// Detail godoc
+//
+//	@Summary		Get Detail User
+//	@Description	Get Detail User
+//	@Tags			user
+//	@Accept			application/json
+//	@Produce		application/json
+//	@Router			/users/{id} [get]
+//	@Success		200  {object}  response.Response{data=dto.User}  "ok"
+func (c UserController) Detail(ctx echo.Context) error {
+	userID, err := strconv.ParseUint(ctx.Param("id"), 10, 32)
+	if err != nil {
+		return response.Response{
+			Code:    http.StatusInternalServerError,
+			Message: err,
+		}.JSON(ctx)
+	}
+
+	userResp, err := c.userService.Get(uint(userID))
+	if err != nil {
+		return response.Response{
+			Code:    http.StatusNotFound,
+			Message: err,
+		}.JSON(ctx)
+	}
+
+	return response.Response{
+		Data: userResp,
+	}.JSON(ctx)
+}
+
+func (c UserController) Follow(ctx echo.Context) error {
+	return ctx.JSON(http.StatusOK, "follow")
 }

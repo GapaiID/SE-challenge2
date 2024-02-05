@@ -42,7 +42,7 @@ func (r UserRepository) GetByEmail(email string) (*models.User, error) {
 
 func (r UserRepository) Get(id uint) (*models.User, error) {
 	var user models.User
-	err := r.Db.ORM.Where("id = ?", id).Find(&user).Error
+	err := r.Db.ORM.Where("id = ?", id).First(&user).Error
 	if err != nil {
 		return nil, err
 	}
