@@ -667,6 +667,41 @@ const docTemplate = `{
                 }
             }
         },
+        "/users": {
+            "get": {
+                "description": "Get Pagination and Several Users",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "blog"
+                ],
+                "summary": "Get Pagination and Several Users",
+                "responses": {
+                    "200": {
+                        "description": "ok",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.Response"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/dto.UserPagination"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
         "/users/{id}": {
             "get": {
                 "description": "Get Detail User",
@@ -720,6 +755,34 @@ const docTemplate = `{
                     "user"
                 ],
                 "summary": "Following User",
+                "responses": {
+                    "202": {
+                        "description": "accepted",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/users/{id}/unfollow": {
+            "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "UnFollowing User",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "user"
+                ],
+                "summary": "UnFollowing User",
                 "responses": {
                     "202": {
                         "description": "accepted",
@@ -1011,6 +1074,20 @@ const docTemplate = `{
                 },
                 "name": {
                     "type": "string"
+                }
+            }
+        },
+        "dto.UserPagination": {
+            "type": "object",
+            "properties": {
+                "list": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/dto.User"
+                    }
+                },
+                "pagination": {
+                    "$ref": "#/definitions/dto.Pagination"
                 }
             }
         },

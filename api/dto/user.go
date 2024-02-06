@@ -1,5 +1,28 @@
 package dto
 
+type UserQueryParams struct {
+	SearchFilter
+	OrderFilter
+	PaginationParams
+}
+
+func (q UserQueryParams) SearchFields() []string {
+	return []string{"email", "name"}
+}
+
+func (q UserQueryParams) OrderFields() []string {
+	return []string{"id"}
+}
+
+func (q UserQueryParams) DefaultPageSize() int {
+	return 10
+}
+
+type UserPagination struct {
+	List       []*User     `json:"list"`
+	Pagination *Pagination `json:"pagination"`
+}
+
 type MeUpdateRequest struct {
 	Name string `json:"name"`
 }

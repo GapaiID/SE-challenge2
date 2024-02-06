@@ -129,6 +129,36 @@ func (c UserController) MeUpdate(ctx echo.Context) error {
 	})
 }
 
+// List godoc
+//
+//	@Summary		Get Pagination and Several Users
+//	@Description	Get Pagination and Several Users
+//	@Tags			blog
+//	@Accept			application/json
+//	@Produce		application/json
+//	@Router			/users [get]
+//	@Success		200  {object}  response.Response{data=dto.UserPagination}  "ok"
+func (c UserController) List(ctx echo.Context) error {
+	queryParams := new(dto.UserQueryParams)
+	if err := ctx.Bind(queryParams); err != nil {
+		return response.Response{
+			Error: err,
+		}.JSONValidationError(ctx)
+	}
+
+	paginationResp, err := c.userService.Query(queryParams)
+	if err != nil {
+		return response.Response{
+			Code:    http.StatusBadRequest,
+			Message: err,
+		}.JSON(ctx)
+	}
+
+	return response.Response{
+		Data: paginationResp,
+	}.JSON(ctx)
+}
+
 // Detail godoc
 //
 //	@Summary		Get Detail User
@@ -189,6 +219,46 @@ func (c UserController) Follow(ctx echo.Context) error {
 	followReq := &dto.FollowerCreateRequest{UserID: uint(userID)}
 	user := ctx.Get(constants.CurrentUser).(*models.User)
 	if err := c.userService.Follow(user, followReq); err != nil {
+		return response.Response{
+			Code:    http.StatusBadRequest,
+			Message: err,
+		}.JSON(ctx)
+	}
+
+	return response.Response{
+		Code: http.StatusAccepted,
+	}.JSON(ctx)
+}
+
+// UnFollow godoc
+//
+//	@Summary		UnFollowing User
+//	@Description	UnFollowing User
+//	@Tags			user
+//	@Accept			application/json
+//	@Produce		application/json
+//	@Router			/users/{id}/unfollow [post]
+//	@Security 		BearerAuth
+//	@Success		202  {object}  response.Response{}  "accepted"
+func (c UserController) UnFollow(ctx echo.Context) error {
+	userID, err := strconv.ParseUint(ctx.Param("id"), 10, 32)
+	if err != nil {
+		return response.Response{
+			Code:    http.StatusInternalServerError,
+			Message: err,
+		}.JSON(ctx)
+	}
+
+	err = c.userPolicy.CanUnFollow(ctx)
+	if err != nil {
+		return response.Response{
+			Error: err,
+		}.JSONPolicyError(ctx)
+	}
+
+	unFollowReq := &dto.UnFollowerCreateRequest{UserID: uint(userID)}
+	user := ctx.Get(constants.CurrentUser).(*models.User)
+	if err := c.userService.UnFollow(user, unFollowReq); err != nil {
 		return response.Response{
 			Code:    http.StatusBadRequest,
 			Message: err,

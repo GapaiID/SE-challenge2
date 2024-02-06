@@ -22,6 +22,9 @@ func (r UserRouter) Setup() {
 	r.handler.Engine.PATCH("/me", r.userController.MeUpdate)
 	r.handler.Engine.POST("/me/password", r.userController.MePassword)
 
+	r.handler.Engine.GET("/users", r.userController.List)
 	r.handler.Engine.GET("/users/:id", r.userController.Detail)
+
 	r.handler.Engine.POST("/users/:id/follow", r.userController.Follow)
+	r.handler.Engine.POST("/users/:id/unfollow", r.userController.UnFollow)
 }

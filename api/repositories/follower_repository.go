@@ -31,3 +31,15 @@ func (r FollowerRepository) Create(follower *models.Follower) error {
 	}
 	return nil
 }
+
+func (r FollowerRepository) Delete(follower *models.Follower) error {
+	if err := r.Db.ORM.Unscoped().Where(
+		"user_id = ?", follower.UserID,
+	).Where(
+		"follower_id = ?", follower.FollowerID,
+	).Delete(follower).Error; err != nil {
+		return err
+	}
+
+	return nil
+}

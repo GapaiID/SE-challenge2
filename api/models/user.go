@@ -16,6 +16,8 @@ type User struct {
 	Password string `gorm:"column:password;not null;" json:"-" validate:"required"`
 }
 
+type Users []User
+
 func (m *User) IsAnonymous() bool {
 	return m == AnonymousUser
 }

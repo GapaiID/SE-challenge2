@@ -186,6 +186,15 @@ definitions:
       name:
         type: string
     type: object
+  dto.UserPagination:
+    properties:
+      list:
+        items:
+          $ref: '#/definitions/dto.User'
+        type: array
+      pagination:
+        $ref: '#/definitions/dto.Pagination'
+    type: object
   response.Response:
     properties:
       data: {}
@@ -573,6 +582,26 @@ paths:
       summary: Register a new User
       tags:
       - auth
+  /users:
+    get:
+      consumes:
+      - application/json
+      description: Get Pagination and Several Users
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: ok
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/dto.UserPagination'
+              type: object
+      summary: Get Pagination and Several Users
+      tags:
+      - blog
   /users/{id}:
     get:
       consumes:
@@ -608,6 +637,23 @@ paths:
       security:
       - BearerAuth: []
       summary: Following User
+      tags:
+      - user
+  /users/{id}/unfollow:
+    post:
+      consumes:
+      - application/json
+      description: UnFollowing User
+      produces:
+      - application/json
+      responses:
+        "202":
+          description: accepted
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - BearerAuth: []
+      summary: UnFollowing User
       tags:
       - user
 securityDefinitions:

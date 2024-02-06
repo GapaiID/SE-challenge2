@@ -50,6 +50,26 @@ func (s UserService) MeUpdate(user *models.User, meReq *dto.MeUpdateRequest) err
 	return nil
 }
 
+func (s UserService) Query(params *dto.UserQueryParams) (any, error) {
+	list, pagination, err := s.userRepository.Query(params)
+	if err != nil {
+		return nil, err
+	}
+
+	var users []*dto.User
+	for _, user := range *list {
+		users = append(users, &dto.User{
+			ID:   user.ID,
+			Name: user.Name,
+		})
+	}
+
+	return &dto.UserPagination{
+		List:       users,
+		Pagination: pagination,
+	}, nil
+}
+
 func (s UserService) Get(id uint) (*dto.User, error) {
 	user, err := s.userRepository.Get(id)
 	if err != nil {
@@ -77,6 +97,24 @@ func (s UserService) Follow(user *models.User, followReq *dto.FollowerCreateRequ
 	follower.FollowerID = user.ID
 
 	err = s.followerRepository.Create(&follower)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (s UserService) UnFollow(user *models.User, followReq *dto.UnFollowerCreateRequest) error {
+	err := s.followerRepository.HasFollowing(user.ID, followReq.UserID)
+	if err == nil {
+		return errors.New("you not follow this user")
+	}
+
+	var follower models.Follower
+	follower.UserID = followReq.UserID
+	follower.FollowerID = user.ID
+
+	err = s.followerRepository.Delete(&follower)
 	if err != nil {
 		return err
 	}

@@ -8,3 +8,7 @@ type UserInFollower struct {
 type FollowerCreateRequest struct {
 	UserID uint `json:"user_id" validate:"required"`
 }
+
+type UnFollowerCreateRequest struct {
+	UserID uint `json:"user_id" validate:"required"`
+}

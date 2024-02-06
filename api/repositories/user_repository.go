@@ -1,6 +1,7 @@
 package repositories
 
 import (
+	"github.com/agung96tm/miblog/api/dto"
 	"github.com/agung96tm/miblog/api/models"
 	"github.com/agung96tm/miblog/lib"
 )
@@ -29,6 +30,22 @@ func (r UserRepository) Update(user *models.User) error {
 		return err
 	}
 	return nil
+}
+
+func (r UserRepository) Query(params *dto.UserQueryParams) (*models.Users, *dto.Pagination, error) {
+	db := r.Db.ORM.Model(&models.Users{})
+
+	db = db.Where(params.GetSearch(params.SearchFields()))
+	db = db.Order(params.ParseOrderFilter(params.OrderFields()))
+	params.SetDefaultPageSize(params.DefaultPageSize())
+
+	list := make(models.Users, 0)
+	pagination, err := QueryPagination(db, params.PaginationParams, &list)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	return &list, pagination, nil
 }
 
 func (r UserRepository) GetByEmail(email string) (*models.User, error) {
