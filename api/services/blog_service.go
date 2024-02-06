@@ -6,6 +6,15 @@ import (
 	"github.com/GapaiID/SE-challenge2/api/repositories"
 )
 
+type IBlogService interface {
+	Query(params *dto.BlogPostQueryParams) (*dto.BlogPostPagination, error)
+	Get(postID uint) (*dto.BlogPost, error)
+	Create(user *models.User, postReq *dto.BlogPostCreateRequest) (*dto.BlogPostCreateResponse, error)
+	Update(userID *models.User, postID uint, postReq *dto.BlogPostUpdateRequest) (*dto.BlogPostUpdateResponse, error)
+	Delete(postID uint) error
+	QueryByFollowing(user *models.User, params *dto.BlogPostQueryParams) (*dto.BlogPostPagination, error)
+}
+
 type BlogService struct {
 	blogPostRepository repositories.BlogPostRepository
 }
@@ -16,7 +25,7 @@ func NewBlogService(blogPostRepository repositories.BlogPostRepository) BlogServ
 	}
 }
 
-func (s BlogService) Query(params *dto.BlogPostQueryParams) (any, error) {
+func (s BlogService) Query(params *dto.BlogPostQueryParams) (*dto.BlogPostPagination, error) {
 	list, pagination, err := s.blogPostRepository.Query(params)
 	if err != nil {
 		return nil, err

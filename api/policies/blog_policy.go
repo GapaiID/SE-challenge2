@@ -8,11 +8,18 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
-type BlogPolicy struct {
-	blogService services.BlogService
+type IBlogPolicy interface {
+	CanCreate(ctx echo.Context) error
+	CanUpdate(ctx echo.Context, postID uint) error
+	CanDelete(ctx echo.Context, postID uint) error
+	CanSeeFollowingPosts(ctx echo.Context) error
 }
 
-func NewBlogPolicy(blogService services.BlogService) BlogPolicy {
+type BlogPolicy struct {
+	blogService services.IBlogService
+}
+
+func NewBlogPolicy(blogService services.IBlogService) BlogPolicy {
 	return BlogPolicy{
 		blogService: blogService,
 	}

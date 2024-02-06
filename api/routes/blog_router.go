@@ -6,23 +6,23 @@ import (
 )
 
 type BlogRouter struct {
-	handler        lib.HttpHandler
+	Handler        lib.HttpHandler
 	blogController controllers.BlogController
 }
 
-func NewBlogRouter(handler lib.HttpHandler, blogController controllers.BlogController) BlogRouter {
+func NewBlogRouter(Handler lib.HttpHandler, blogController controllers.BlogController) BlogRouter {
 	return BlogRouter{
-		handler:        handler,
+		Handler:        Handler,
 		blogController: blogController,
 	}
 }
 
 func (r BlogRouter) Setup() {
-	r.handler.Engine.GET("/following_blog_posts", r.blogController.FollowingBlogPostList)
+	r.Handler.Engine.GET("/following_blog_posts", r.blogController.FollowingBlogPostList)
 
-	r.handler.Engine.GET("/blog_posts", r.blogController.List)
-	r.handler.Engine.POST("/blog_posts", r.blogController.Create)
-	r.handler.Engine.GET("/blog_posts/:id", r.blogController.Detail)
-	r.handler.Engine.PATCH("/blog_posts/:id", r.blogController.Update)
-	r.handler.Engine.DELETE("/blog_posts/:id", r.blogController.Delete)
+	r.Handler.Engine.GET("/blog_posts", r.blogController.List)
+	r.Handler.Engine.POST("/blog_posts", r.blogController.Create)
+	r.Handler.Engine.GET("/blog_posts/:id", r.blogController.Detail)
+	r.Handler.Engine.PATCH("/blog_posts/:id", r.blogController.Update)
+	r.Handler.Engine.DELETE("/blog_posts/:id", r.blogController.Delete)
 }

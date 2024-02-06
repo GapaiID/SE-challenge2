@@ -13,11 +13,11 @@ import (
 )
 
 type BlogController struct {
-	blogService services.BlogService
-	blogPolicy  policies.BlogPolicy
+	blogService services.IBlogService
+	blogPolicy  policies.IBlogPolicy
 }
 
-func NewBlogController(blogService services.BlogService, blogPolicy policies.BlogPolicy) BlogController {
+func NewBlogController(blogService services.IBlogService, blogPolicy policies.IBlogPolicy) BlogController {
 	return BlogController{
 		blogService: blogService,
 		blogPolicy:  blogPolicy,
