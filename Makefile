@@ -13,7 +13,7 @@ runserver:
 
 ## makemigrations name=$1: create a new database migration
 .PHONY: makemigrations
-db/migration/new:
+makemigrations:
 	@echo "Create migration files for ${name}"
 	go run . makemigrations -f ${name}
 
@@ -22,6 +22,12 @@ db/migration/new:
 .PHONY: migrate
 migrate:
 	go run . migrate -e up
+
+## docs: generate swagger
+.PHONY: docs
+docs:
+	swag init --parseDependency --parseInternal
+
 
 
 ## audit: check quality of codes
