@@ -6,15 +6,20 @@ import (
 )
 
 type CorsMiddleware struct {
-	handler lib.HttpHandler
+	handler    lib.HttpHandler
+	corsConfig *lib.CorsConfig
 }
 
-func NewCorsMiddleware(handler lib.HttpHandler) CorsMiddleware {
+func NewCorsMiddleware(handler lib.HttpHandler, config lib.Config) CorsMiddleware {
 	return CorsMiddleware{
-		handler: handler,
+		handler:    handler,
+		corsConfig: config.Cors,
 	}
 }
 
 func (m CorsMiddleware) Setup() {
-	m.handler.Engine.Use(middleware.CORS())
+	m.handler.Engine.Use(middleware.CORSWithConfig(middleware.CORSConfig{
+		AllowOrigins: m.corsConfig.AllowOrigins,
+		AllowMethods: m.corsConfig.AllowMethods,
+	}))
 }

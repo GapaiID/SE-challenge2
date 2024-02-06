@@ -1,11 +1,14 @@
 Name: echo-admin
 SecretKey: foobar
 
-
-HTTP:
+Http:
   Host: 127.0.0.1
   Port: 8000
 
+Swagger:
+  Title: Miblog API
+  Description: List of available Endpoints to Consumes
+  Version: 1.0
 
 Database:
   Engine: postgres
@@ -20,3 +23,20 @@ Redis:
   Host: 127.0.0.1
   Port: 6379
   KeyPrefix: r
+
+Cors:
+  AllowOrigins:
+    - http://localhost:8000
+    - http://localhost:3000
+
+Mail:
+  Enable: false
+  Host: sandbox.smtp.mailtrap.io
+  Port: 25
+  User: 123456123456
+  Password: 123456123456
+  UseTLS: true
+  FromEmail: noreply <noreply@example.com>
+
+Jwt:
+  TokenLifeTime: 1440

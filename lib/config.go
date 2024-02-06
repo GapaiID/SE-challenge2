@@ -5,6 +5,7 @@ import (
 	"github.com/go-playground/validator/v10"
 	"github.com/pkg/errors"
 	"github.com/spf13/viper"
+	"net/http"
 )
 
 var configPath = "./config/config.yaml"
@@ -37,6 +38,17 @@ var defaultConfig = Config{
 		Version:     "1.0",
 	},
 	Redis: &RedisConfig{Host: "127.0.0.1", Port: 6379},
+	Cors: &CorsConfig{
+		AllowOrigins: []string{"*"},
+		AllowMethods: []string{
+			http.MethodGet,
+			http.MethodHead,
+			http.MethodPut,
+			http.MethodPatch,
+			http.MethodPost,
+			http.MethodDelete,
+		},
+	},
 }
 
 func NewConfig() Config {
@@ -58,11 +70,17 @@ type Config struct {
 	SecretKey string `mapstructure:"SecretKey"`
 
 	Http     *HttpConfig     `mapstructure:"Http"`
-	Database *DatabaseConfig `mapstructure:"database"`
-	JWT      *JWTConfig      `mapstructure:"jwt"`
-	Mail     *MailConfig     `mapstructure:"mail"`
-	Swagger  *SwaggerConfig  `mapstructure:"swagger"`
-	Redis    *RedisConfig    `mapstructure:"redis"`
+	Database *DatabaseConfig `mapstructure:"Database"`
+	JWT      *JWTConfig      `mapstructure:"Jwt"`
+	Mail     *MailConfig     `mapstructure:"Mail"`
+	Swagger  *SwaggerConfig  `mapstructure:"Swagger"`
+	Redis    *RedisConfig    `mapstructure:"Redis"`
+	Cors     *CorsConfig     `mapstructure:"Cors"`
+}
+
+type CorsConfig struct {
+	AllowOrigins []string `mapstructure:"AllowOrigins"`
+	AllowMethods []string `mapstructure:"AllowMethods"`
 }
 
 type RedisConfig struct {
@@ -76,9 +94,9 @@ func (a *RedisConfig) Addr() string {
 }
 
 type SwaggerConfig struct {
-	Title       string `mapstructure:"title"`
-	Description string `maptsructure:"description"`
-	Version     string `mapstructure:"version"`
+	Title       string `mapstructure:"Title"`
+	Description string `maptsructure:"Description"`
+	Version     string `mapstructure:"Version"`
 }
 
 type MailConfig struct {
