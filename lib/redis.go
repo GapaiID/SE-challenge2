@@ -12,6 +12,13 @@ import (
 	"time"
 )
 
+type IRedis interface {
+	Set(key string, value any, expiration time.Duration) error
+	Get(key string, value any) error
+	Delete(keys ...string) (bool, error)
+	Check(keys ...string) (bool, error)
+}
+
 type Redis struct {
 	cache  *cache.Cache
 	client *redis.Client
@@ -58,7 +65,7 @@ func (a Redis) Set(key string, value any, expiration time.Duration) error {
 	})
 }
 
-func (a Redis) Get(key string, value interface{}) error {
+func (a Redis) Get(key string, value any) error {
 	err := a.cache.Get(context.TODO(), a.wrapperKey(key), value)
 	if errors.Is(err, cache.ErrCacheMiss) {
 		err = appErrors.ErrRedisKeyNoExist

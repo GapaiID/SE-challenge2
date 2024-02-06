@@ -10,5 +10,5 @@ var Module = fx.Module(
 	fx.Provide(NewMigration),
 	fx.Provide(NewJWT),
 	fx.Provide(NewMail),
-	fx.Provide(NewRedis),
+	fx.Provide(fx.Annotate(NewRedis, fx.As(new(IRedis)))),
 )

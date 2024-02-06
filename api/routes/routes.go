@@ -10,6 +10,7 @@ var Module = fx.Module(
 	fx.Provide(NewRoutes),
 	fx.Provide(NewBlogRouter),
 	fx.Provide(NewCommentRouter),
+	fx.Provide(NewSwaggerRouter),
 )
 
 type Routes []Route
@@ -24,6 +25,7 @@ func NewRoutes(
 	userRouter UserRouter,
 	blogRouter BlogRouter,
 	commentRouter CommentRouter,
+	swaggerRouter SwaggerRouter,
 ) Routes {
 	return Routes{
 		mainRouter,
@@ -31,6 +33,7 @@ func NewRoutes(
 		userRouter,
 		blogRouter,
 		commentRouter,
+		swaggerRouter,
 	}
 }
 

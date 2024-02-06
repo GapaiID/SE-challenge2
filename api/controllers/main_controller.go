@@ -9,10 +9,10 @@ import (
 )
 
 type MainController struct {
-	redis lib.Redis
+	redis lib.IRedis
 }
 
-func NewMainController(redis lib.Redis) MainController {
+func NewMainController(redis lib.IRedis) MainController {
 	return MainController{
 		redis: redis,
 	}
