@@ -3,6 +3,7 @@ package repositories
 import (
 	"github.com/GapaiID/SE-challenge2/api/dto"
 	"gorm.io/gorm"
+	"math"
 )
 
 func QueryPagination(db *gorm.DB, pp dto.PaginationParams, out interface{}) (*dto.Pagination, error) {
@@ -16,6 +17,7 @@ func QueryPagination(db *gorm.DB, pp dto.PaginationParams, out interface{}) (*dt
 	pagination.Current = pp.Current
 	pagination.PageSize = pp.PageSize
 	pagination.Total = total
+	pagination.LastPage = int(math.Ceil(float64(total) / float64(pp.PageSize)))
 
 	return pagination, nil
 }

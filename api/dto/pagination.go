@@ -4,6 +4,7 @@ type Pagination struct {
 	Total    int64 `json:"total"`
 	Current  int   `json:"current"`
 	PageSize int   `json:"page_size"`
+	LastPage int   `json:"last_page"`
 }
 
 type PaginationParams struct {
