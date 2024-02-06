@@ -1,10 +1,10 @@
 package policies
 
 import (
-	"github.com/agung96tm/miblog/api/models"
-	"github.com/agung96tm/miblog/api/services"
-	"github.com/agung96tm/miblog/constants"
-	appErrors "github.com/agung96tm/miblog/errors"
+	"github.com/GapaiID/SE-challenge2/api/models"
+	"github.com/GapaiID/SE-challenge2/api/services"
+	"github.com/GapaiID/SE-challenge2/constants"
+	appErrors "github.com/GapaiID/SE-challenge2/errors"
 	"github.com/labstack/echo/v4"
 )
 

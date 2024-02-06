@@ -1,6 +1,6 @@
 package main
 
-import "github.com/agung96tm/miblog/cmd"
+import "github.com/GapaiID/SE-challenge2/cmd"
 
 // @securityDefinitions.apikey BearerAuth
 // @in header

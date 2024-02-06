@@ -1,7 +1,7 @@
 package repositories
 
 import (
-	"github.com/agung96tm/miblog/api/dto"
+	"github.com/GapaiID/SE-challenge2/api/dto"
 	"gorm.io/gorm"
 )
 

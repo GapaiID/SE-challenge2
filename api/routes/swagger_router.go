@@ -1,8 +1,8 @@
 package routes
 
 import (
-	"github.com/agung96tm/miblog/docs"
-	"github.com/agung96tm/miblog/lib"
+	"github.com/GapaiID/SE-challenge2/docs"
+	"github.com/GapaiID/SE-challenge2/lib"
 	echoSwagger "github.com/swaggo/echo-swagger"
 )
 

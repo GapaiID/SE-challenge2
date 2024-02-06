@@ -1,7 +1,7 @@
 package middlewares
 
 import (
-	"github.com/agung96tm/miblog/lib"
+	"github.com/GapaiID/SE-challenge2/lib"
 	"github.com/labstack/echo/v4/middleware"
 )
 

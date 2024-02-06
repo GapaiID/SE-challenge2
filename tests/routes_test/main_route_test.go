@@ -1,9 +1,9 @@
 package routes_test
 
 import (
-	"github.com/agung96tm/miblog/api/controllers"
-	"github.com/agung96tm/miblog/api/routes"
-	"github.com/agung96tm/miblog/lib"
+	"github.com/GapaiID/SE-challenge2/api/controllers"
+	"github.com/GapaiID/SE-challenge2/api/routes"
+	"github.com/GapaiID/SE-challenge2/lib"
 	"github.com/stretchr/testify/suite"
 	"net/http"
 	"testing"

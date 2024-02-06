@@ -1,8 +1,8 @@
 package runserver
 
 import (
-	"github.com/agung96tm/miblog/bootstrap"
-	"github.com/agung96tm/miblog/lib"
+	"github.com/GapaiID/SE-challenge2/bootstrap"
+	"github.com/GapaiID/SE-challenge2/lib"
 	"github.com/spf13/cobra"
 	"go.uber.org/fx"
 )

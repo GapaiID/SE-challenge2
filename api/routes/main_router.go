@@ -1,8 +1,8 @@
 package routes
 
 import (
-	"github.com/agung96tm/miblog/api/controllers"
-	"github.com/agung96tm/miblog/lib"
+	"github.com/GapaiID/SE-challenge2/api/controllers"
+	"github.com/GapaiID/SE-challenge2/lib"
 )
 
 type MainRouter struct {

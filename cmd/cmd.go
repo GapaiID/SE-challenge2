@@ -2,9 +2,9 @@ package cmd
 
 import (
 	"errors"
-	"github.com/agung96tm/miblog/cmd/makemigrations"
-	"github.com/agung96tm/miblog/cmd/migrate"
-	"github.com/agung96tm/miblog/cmd/runserver"
+	"github.com/GapaiID/SE-challenge2/cmd/makemigrations"
+	"github.com/GapaiID/SE-challenge2/cmd/migrate"
+	"github.com/GapaiID/SE-challenge2/cmd/runserver"
 	"github.com/spf13/cobra"
 	"os"
 )

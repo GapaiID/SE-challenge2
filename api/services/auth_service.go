@@ -2,11 +2,11 @@ package services
 
 import (
 	"errors"
-	"github.com/agung96tm/miblog/api/dto"
-	"github.com/agung96tm/miblog/api/mails"
-	"github.com/agung96tm/miblog/api/models"
-	"github.com/agung96tm/miblog/api/repositories"
-	"github.com/agung96tm/miblog/lib"
+	"github.com/GapaiID/SE-challenge2/api/dto"
+	"github.com/GapaiID/SE-challenge2/api/mails"
+	"github.com/GapaiID/SE-challenge2/api/models"
+	"github.com/GapaiID/SE-challenge2/api/repositories"
+	"github.com/GapaiID/SE-challenge2/lib"
 )
 
 type AuthService struct {

@@ -2,7 +2,7 @@ package response
 
 import (
 	"errors"
-	appErrors "github.com/agung96tm/miblog/errors"
+	appErrors "github.com/GapaiID/SE-challenge2/errors"
 	"github.com/go-playground/validator/v10"
 	"github.com/labstack/echo/v4"
 	"net/http"

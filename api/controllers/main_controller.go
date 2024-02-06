@@ -1,8 +1,8 @@
 package controllers
 
 import (
-	"github.com/agung96tm/miblog/constants"
-	"github.com/agung96tm/miblog/lib"
+	"github.com/GapaiID/SE-challenge2/constants"
+	"github.com/GapaiID/SE-challenge2/lib"
 	"github.com/labstack/echo/v4"
 	"net/http"
 	"time"

@@ -1,7 +1,7 @@
 package migrate
 
 import (
-	"github.com/agung96tm/miblog/lib"
+	"github.com/GapaiID/SE-challenge2/lib"
 	"github.com/labstack/gommon/log"
 	"github.com/spf13/cobra"
 )

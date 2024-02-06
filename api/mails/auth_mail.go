@@ -1,8 +1,8 @@
 package mails
 
 import (
-	"github.com/agung96tm/miblog/api/models"
-	"github.com/agung96tm/miblog/lib"
+	"github.com/GapaiID/SE-challenge2/api/models"
+	"github.com/GapaiID/SE-challenge2/lib"
 )
 
 type AuthMail struct {

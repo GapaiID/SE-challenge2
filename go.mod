@@ -1,4 +1,4 @@
-module github.com/agung96tm/miblog
+module github.com/GapaiID/SE-challenge2
 
 go 1.21
 

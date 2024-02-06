@@ -1,10 +1,10 @@
 package middlewares
 
 import (
-	"github.com/agung96tm/miblog/api/models"
-	"github.com/agung96tm/miblog/api/services"
-	"github.com/agung96tm/miblog/constants"
-	"github.com/agung96tm/miblog/lib"
+	"github.com/GapaiID/SE-challenge2/api/models"
+	"github.com/GapaiID/SE-challenge2/api/services"
+	"github.com/GapaiID/SE-challenge2/constants"
+	"github.com/GapaiID/SE-challenge2/lib"
 	"github.com/labstack/echo/v4"
 	"strings"
 )
