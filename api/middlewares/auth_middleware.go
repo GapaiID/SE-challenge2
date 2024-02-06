@@ -11,10 +11,10 @@ import (
 
 type AuthMiddleware struct {
 	handler     lib.HttpHandler
-	authService services.AuthService
+	authService services.IAuthService
 }
 
-func NewAuthMiddleware(handler lib.HttpHandler, authService services.AuthService) AuthMiddleware {
+func NewAuthMiddleware(handler lib.HttpHandler, authService services.IAuthService) AuthMiddleware {
 	return AuthMiddleware{
 		handler:     handler,
 		authService: authService,

@@ -1,6 +1,9 @@
 package routes_test
 
 import (
+	"errors"
+	"github.com/GapaiID/SE-challenge2/api/dto"
+	"github.com/GapaiID/SE-challenge2/api/models"
 	"time"
 )
 
@@ -30,4 +33,31 @@ func (r *LibRedisMock) Delete(keys ...string) (bool, error) {
 
 func (r *LibRedisMock) Check(keys ...string) (bool, error) {
 	return false, nil
+}
+
+type AuthServiceMock struct{}
+
+func NewAuthServiceMock() AuthServiceMock {
+	return AuthServiceMock{}
+}
+
+func (auth AuthServiceMock) Register(registerReq *dto.RegisterRequest) (*dto.RegisterResponse, error) {
+	if registerReq.Email == "valid@example.com" {
+		return &dto.RegisterResponse{
+			Email: registerReq.Email,
+			Name:  registerReq.Name,
+		}, nil
+	}
+	return nil, errors.New("register invalid")
+}
+func (auth AuthServiceMock) Login(loginReq *dto.LoginRequest) (*dto.LoginResponse, error) {
+	if loginReq.Email == "valid@example.com" {
+		return &dto.LoginResponse{
+			Token: "token-jwt",
+		}, nil
+	}
+	return nil, errors.New("invalid email")
+}
+func (auth AuthServiceMock) AuthorizeJWTToken(token string) (*models.User, error) {
+	return nil, nil
 }

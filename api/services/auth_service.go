@@ -9,6 +9,12 @@ import (
 	"github.com/GapaiID/SE-challenge2/lib"
 )
 
+type IAuthService interface {
+	Register(registerReq *dto.RegisterRequest) (*dto.RegisterResponse, error)
+	Login(loginReq *dto.LoginRequest) (*dto.LoginResponse, error)
+	AuthorizeJWTToken(token string) (*models.User, error)
+}
+
 type AuthService struct {
 	userRepository repositories.UserRepository
 	jwt            lib.JWT

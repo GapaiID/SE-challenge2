@@ -9,10 +9,10 @@ import (
 )
 
 type UserPolicy struct {
-	authService services.AuthService
+	authService services.IAuthService
 }
 
-func NewUserPolicy(authService services.AuthService) UserPolicy {
+func NewUserPolicy(authService services.IAuthService) UserPolicy {
 	return UserPolicy{
 		authService: authService,
 	}

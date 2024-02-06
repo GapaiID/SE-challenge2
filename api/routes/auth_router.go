@@ -6,18 +6,18 @@ import (
 )
 
 type AuthRouter struct {
-	handler        lib.HttpHandler
+	Handler        lib.HttpHandler
 	authController controllers.AuthController
 }
 
 func NewAuthRouter(handler lib.HttpHandler, authController controllers.AuthController) AuthRouter {
 	return AuthRouter{
-		handler:        handler,
+		Handler:        handler,
 		authController: authController,
 	}
 }
 
 func (r AuthRouter) Setup() {
-	r.handler.Engine.POST("/auth/register", r.authController.Register)
-	r.handler.Engine.POST("/auth/login", r.authController.Login)
+	r.Handler.Engine.POST("/auth/register", r.authController.Register)
+	r.Handler.Engine.POST("/auth/login", r.authController.Login)
 }

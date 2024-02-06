@@ -9,10 +9,10 @@ import (
 )
 
 type AuthController struct {
-	authService services.AuthService
+	authService services.IAuthService
 }
 
-func NewAuthController(authService services.AuthService) AuthController {
+func NewAuthController(authService services.IAuthService) AuthController {
 	return AuthController{
 		authService: authService,
 	}

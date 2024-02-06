@@ -4,7 +4,7 @@ import "go.uber.org/fx"
 
 var Module = fx.Module(
 	"services",
-	fx.Provide(NewAuthService),
+	fx.Provide(fx.Annotate(NewAuthService, fx.As(new(IAuthService)))),
 	fx.Provide(NewUserService),
 	fx.Provide(NewBlogService),
 	fx.Provide(NewCommentService),

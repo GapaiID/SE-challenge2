@@ -13,12 +13,12 @@ import (
 )
 
 type UserController struct {
-	authService services.AuthService
+	authService services.IAuthService
 	userService services.UserService
 	userPolicy  policies.UserPolicy
 }
 
-func NewUserController(authService services.AuthService, userService services.UserService, userPolicy policies.UserPolicy) UserController {
+func NewUserController(authService services.IAuthService, userService services.UserService, userPolicy policies.UserPolicy) UserController {
 	return UserController{
 		authService: authService,
 		userService: userService,
