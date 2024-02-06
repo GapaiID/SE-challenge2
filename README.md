@@ -50,6 +50,13 @@ go run main.go makemigrations -f "create_new_migration_file"
 make makemigrations name="create_new_migration_file"
 ```
 
+### Test
+```shell
+go test -v ./...
+# or
+make audit
+```
+
 ### Contributors
 <table>
   <tr>
@@ -58,7 +65,8 @@ make makemigrations name="create_new_migration_file"
         <img src="https://avatars.githubusercontent.com/u/1901484?v=4" width="100px;" alt=""/><br />
         <b>Agung Yuliyanto</b><br>
       </a>
-      <div>💻</div>
+      <div>agung.96tm@gmail.com</div>
+      <div>0877-8296-5881</div>
     </td>
   </tr>
 </table>
