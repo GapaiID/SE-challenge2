@@ -22,6 +22,13 @@ export class AuthService {
 
       if (!user) throw new BadRequestException('User Not Found');
 
+      const valid = await this.bcryptService.verify(
+        userLogin.password,
+        user.password,
+      );
+
+      if (!valid) throw new BadRequestException('Email/Password is wrong!');
+
       const token = await this.jwtService.signAsync({
         id: user.id,
         email: user.email,
