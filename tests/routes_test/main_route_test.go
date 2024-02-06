@@ -15,7 +15,7 @@ type MainRouterSuite struct {
 
 func (suite *MainRouterSuite) TsWithRedis(redisMock *LibRedisMock) *TestServer {
 	controller := controllers.NewMainController(redisMock)
-	router := routes.NewMainRouter(lib.NewHttpHandler(), controller, lib.Config{})
+	router := routes.NewMainRouter(lib.NewHttpHandler(), controller)
 	router.Setup()
 	return NewTestServer(suite.T(), router.Handler.Engine)
 }
