@@ -14,8 +14,9 @@ export class AuthService {
   ) {}
   async login(userLogin: UserLoginDto): Promise<Record<string, any>> {
     try {
-      if (!userLogin || !userLogin.email || !userLogin.password)
+      if (!userLogin || !userLogin.email || !userLogin.password) {
         throw new HttpException('Unauthenticated', 401);
+      }
 
       const user = await this.userService.getUserByEmail(userLogin.email);
 
@@ -45,8 +46,6 @@ export class AuthService {
     userRegister.password = await this.bcryptService.hashing(
       userRegister.password,
     );
-
-    console.log(userRegister, '<<<< MASUK REGIS');
 
     const generatedUser = await this.userService.saveUser(userRegister);
 
