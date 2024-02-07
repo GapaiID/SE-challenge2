@@ -28,6 +28,17 @@ definitions:
       pagination:
         $ref: '#/definitions/dto.Pagination'
     type: object
+  dto.BlogPostQueryParams:
+    properties:
+      current:
+        type: integer
+      order_by:
+        type: string
+      page_size:
+        type: integer
+      q:
+        type: string
+    type: object
   dto.BlogPostUpdateResponse:
     properties:
       body:
@@ -65,6 +76,17 @@ definitions:
         type: array
       pagination:
         $ref: '#/definitions/dto.Pagination'
+    type: object
+  dto.CommentQueryParams:
+    properties:
+      current:
+        type: integer
+      order_by:
+        type: string
+      page_size:
+        type: integer
+      q:
+        type: string
     type: object
   dto.CommentUpdateResponse:
     properties:
@@ -126,6 +148,8 @@ definitions:
   dto.Pagination:
     properties:
       current:
+        type: integer
+      last_page:
         type: integer
       page_size:
         type: integer
@@ -195,6 +219,17 @@ definitions:
       pagination:
         $ref: '#/definitions/dto.Pagination'
     type: object
+  dto.UserQueryParams:
+    properties:
+      current:
+        type: integer
+      order_by:
+        type: string
+      page_size:
+        type: integer
+      q:
+        type: string
+    type: object
   response.Response:
     properties:
       data: {}
@@ -215,6 +250,13 @@ paths:
       consumes:
       - application/json
       description: Get Pagination and Several Posts
+      parameters:
+      - description: Query Params
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/dto.BlogPostQueryParams'
       produces:
       - application/json
       responses:
@@ -313,6 +355,13 @@ paths:
       consumes:
       - application/json
       description: Get Pagination and Several Comments
+      parameters:
+      - description: Query Params
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/dto.CommentQueryParams'
       produces:
       - application/json
       responses:
@@ -406,7 +455,7 @@ paths:
       summary: Update a Comment
       tags:
       - comment
-  /following_blog_posts/:
+  /following_blog_posts:
     get:
       consumes:
       - application/json
@@ -587,6 +636,13 @@ paths:
       consumes:
       - application/json
       description: Get Pagination and Several Users
+      parameters:
+      - description: Query Params
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/dto.UserQueryParams'
       produces:
       - application/json
       responses:
@@ -601,7 +657,7 @@ paths:
               type: object
       summary: Get Pagination and Several Users
       tags:
-      - blog
+      - user
   /users/{id}:
     get:
       consumes:

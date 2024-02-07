@@ -133,9 +133,10 @@ func (c UserController) MeUpdate(ctx echo.Context) error {
 //
 //	@Summary		Get Pagination and Several Users
 //	@Description	Get Pagination and Several Users
-//	@Tags			blog
+//	@Tags			user
 //	@Accept			application/json
 //	@Produce		application/json
+//	@Param 			data body dto.UserQueryParams true "Query Params"
 //	@Router			/users [get]
 //	@Success		200  {object}  response.Response{data=dto.UserPagination}  "ok"
 func (c UserController) List(ctx echo.Context) error {

@@ -28,6 +28,17 @@ const docTemplate = `{
                     "blog"
                 ],
                 "summary": "Get Pagination and Several Posts",
+                "parameters": [
+                    {
+                        "description": "Query Params",
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.BlogPostQueryParams"
+                        }
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "ok",
@@ -200,6 +211,17 @@ const docTemplate = `{
                     "comment"
                 ],
                 "summary": "Get Pagination and Several Comments",
+                "parameters": [
+                    {
+                        "description": "Query Params",
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.CommentQueryParams"
+                        }
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "ok",
@@ -359,7 +381,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/following_blog_posts/": {
+        "/following_blog_posts": {
             "get": {
                 "security": [
                     {
@@ -677,9 +699,20 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "blog"
+                    "user"
                 ],
                 "summary": "Get Pagination and Several Users",
+                "parameters": [
+                    {
+                        "description": "Query Params",
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.UserQueryParams"
+                        }
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "ok",
@@ -840,6 +873,23 @@ const docTemplate = `{
                 }
             }
         },
+        "dto.BlogPostQueryParams": {
+            "type": "object",
+            "properties": {
+                "current": {
+                    "type": "integer"
+                },
+                "order_by": {
+                    "type": "string"
+                },
+                "page_size": {
+                    "type": "integer"
+                },
+                "q": {
+                    "type": "string"
+                }
+            }
+        },
         "dto.BlogPostUpdateResponse": {
             "type": "object",
             "properties": {
@@ -896,6 +946,23 @@ const docTemplate = `{
                 },
                 "pagination": {
                     "$ref": "#/definitions/dto.Pagination"
+                }
+            }
+        },
+        "dto.CommentQueryParams": {
+            "type": "object",
+            "properties": {
+                "current": {
+                    "type": "integer"
+                },
+                "order_by": {
+                    "type": "string"
+                },
+                "page_size": {
+                    "type": "integer"
+                },
+                "q": {
+                    "type": "string"
                 }
             }
         },
@@ -986,6 +1053,9 @@ const docTemplate = `{
             "type": "object",
             "properties": {
                 "current": {
+                    "type": "integer"
+                },
+                "last_page": {
                     "type": "integer"
                 },
                 "page_size": {
@@ -1088,6 +1158,23 @@ const docTemplate = `{
                 },
                 "pagination": {
                     "$ref": "#/definitions/dto.Pagination"
+                }
+            }
+        },
+        "dto.UserQueryParams": {
+            "type": "object",
+            "properties": {
+                "current": {
+                    "type": "integer"
+                },
+                "order_by": {
+                    "type": "string"
+                },
+                "page_size": {
+                    "type": "integer"
+                },
+                "q": {
+                    "type": "string"
                 }
             }
         },

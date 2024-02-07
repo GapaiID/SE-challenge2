@@ -31,6 +31,7 @@ func NewBlogController(blogService services.IBlogService, blogPolicy policies.IB
 //	@Tags			blog
 //	@Accept			application/json
 //	@Produce		application/json
+//	@Param 			data body dto.BlogPostQueryParams true "Query Params"
 //	@Router			/blog_posts [get]
 //	@Success		200  {object}  response.Response{data=dto.BlogPostPagination}  "ok"
 func (c BlogController) List(ctx echo.Context) error {
@@ -220,7 +221,7 @@ func (c BlogController) Delete(ctx echo.Context) error {
 //	@Tags			blog
 //	@Accept			application/json
 //	@Produce		application/json
-//	@Router			/following_blog_posts/ [get]
+//	@Router			/following_blog_posts [get]
 //	@Security 		BearerAuth
 //	@Success		200  {object}  response.Response{data=dto.BlogPostPagination}  "ok"
 func (c BlogController) FollowingBlogPostList(ctx echo.Context) error {

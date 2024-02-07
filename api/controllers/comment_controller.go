@@ -31,6 +31,7 @@ func NewCommentController(commentService services.CommentService, commentPolicy 
 //	@Tags			comment
 //	@Accept			application/json
 //	@Produce		application/json
+//	@Param 			data body dto.CommentQueryParams true "Query Params"
 //	@Router			/comments [get]
 //	@Success		200  {object}  response.Response{data=dto.CommentPagination}  "ok"
 func (c CommentController) List(ctx echo.Context) error {

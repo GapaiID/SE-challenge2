@@ -17,6 +17,17 @@
                     "blog"
                 ],
                 "summary": "Get Pagination and Several Posts",
+                "parameters": [
+                    {
+                        "description": "Query Params",
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.BlogPostQueryParams"
+                        }
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "ok",
@@ -189,6 +200,17 @@
                     "comment"
                 ],
                 "summary": "Get Pagination and Several Comments",
+                "parameters": [
+                    {
+                        "description": "Query Params",
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.CommentQueryParams"
+                        }
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "ok",
@@ -348,7 +370,7 @@
                 }
             }
         },
-        "/following_blog_posts/": {
+        "/following_blog_posts": {
             "get": {
                 "security": [
                     {
@@ -666,9 +688,20 @@
                     "application/json"
                 ],
                 "tags": [
-                    "blog"
+                    "user"
                 ],
                 "summary": "Get Pagination and Several Users",
+                "parameters": [
+                    {
+                        "description": "Query Params",
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.UserQueryParams"
+                        }
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "ok",
@@ -829,6 +862,23 @@
                 }
             }
         },
+        "dto.BlogPostQueryParams": {
+            "type": "object",
+            "properties": {
+                "current": {
+                    "type": "integer"
+                },
+                "order_by": {
+                    "type": "string"
+                },
+                "page_size": {
+                    "type": "integer"
+                },
+                "q": {
+                    "type": "string"
+                }
+            }
+        },
         "dto.BlogPostUpdateResponse": {
             "type": "object",
             "properties": {
@@ -885,6 +935,23 @@
                 },
                 "pagination": {
                     "$ref": "#/definitions/dto.Pagination"
+                }
+            }
+        },
+        "dto.CommentQueryParams": {
+            "type": "object",
+            "properties": {
+                "current": {
+                    "type": "integer"
+                },
+                "order_by": {
+                    "type": "string"
+                },
+                "page_size": {
+                    "type": "integer"
+                },
+                "q": {
+                    "type": "string"
                 }
             }
         },
@@ -975,6 +1042,9 @@
             "type": "object",
             "properties": {
                 "current": {
+                    "type": "integer"
+                },
+                "last_page": {
                     "type": "integer"
                 },
                 "page_size": {
@@ -1077,6 +1147,23 @@
                 },
                 "pagination": {
                     "$ref": "#/definitions/dto.Pagination"
+                }
+            }
+        },
+        "dto.UserQueryParams": {
+            "type": "object",
+            "properties": {
+                "current": {
+                    "type": "integer"
+                },
+                "order_by": {
+                    "type": "string"
+                },
+                "page_size": {
+                    "type": "integer"
+                },
+                "q": {
+                    "type": "string"
                 }
             }
         },
