@@ -1,0 +1,45 @@
+package repositories
+
+import (
+	"errors"
+	"github.com/GapaiID/SE-challenge2/api/models"
+	"github.com/GapaiID/SE-challenge2/lib"
+)
+
+type FollowerRepository struct {
+	Db lib.Database
+}
+
+func NewFollowerRepository(db lib.Database) FollowerRepository {
+	return FollowerRepository{
+		Db: db,
+	}
+}
+
+func (r FollowerRepository) HasFollowing(userID uint, followingID uint) error {
+	var follower models.Follower
+
+	if err := r.Db.ORM.Where("user_id = ?", followingID).Where("follower_id = ?", userID).First(&follower).Error; err != nil {
+		return nil
+	}
+	return errors.New("already followed")
+}
+
+func (r FollowerRepository) Create(follower *models.Follower) error {
+	if err := r.Db.ORM.Create(follower).Error; err != nil {
+		return err
+	}
+	return nil
+}
+
+func (r FollowerRepository) Delete(follower *models.Follower) error {
+	if err := r.Db.ORM.Unscoped().Where(
+		"user_id = ?", follower.UserID,
+	).Where(
+		"follower_id = ?", follower.FollowerID,
+	).Delete(follower).Error; err != nil {
+		return err
+	}
+
+	return nil
+}

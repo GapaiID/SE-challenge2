@@ -1,0 +1,254 @@
+package controllers
+
+import (
+	"github.com/GapaiID/SE-challenge2/api/dto"
+	"github.com/GapaiID/SE-challenge2/api/models"
+	"github.com/GapaiID/SE-challenge2/api/policies"
+	"github.com/GapaiID/SE-challenge2/api/services"
+	"github.com/GapaiID/SE-challenge2/constants"
+	"github.com/GapaiID/SE-challenge2/pkg/response"
+	"github.com/labstack/echo/v4"
+	"net/http"
+	"strconv"
+)
+
+type BlogController struct {
+	blogService services.IBlogService
+	blogPolicy  policies.IBlogPolicy
+}
+
+func NewBlogController(blogService services.IBlogService, blogPolicy policies.IBlogPolicy) BlogController {
+	return BlogController{
+		blogService: blogService,
+		blogPolicy:  blogPolicy,
+	}
+}
+
+// List godoc
+//
+//	@Summary		Get Pagination and Several Posts
+//	@Description	Get Pagination and Several Posts
+//	@Tags			blog
+//	@Accept			application/json
+//	@Produce		application/json
+//	@Param 			data body dto.BlogPostQueryParams true "Query Params"
+//	@Router			/blog_posts [get]
+//	@Success		200  {object}  response.Response{data=dto.BlogPostPagination}  "ok"
+func (c BlogController) List(ctx echo.Context) error {
+	queryParams := new(dto.BlogPostQueryParams)
+	if err := ctx.Bind(queryParams); err != nil {
+		return response.Response{
+			Error: err,
+		}.JSONValidationError(ctx)
+	}
+
+	paginationResp, err := c.blogService.Query(queryParams)
+	if err != nil {
+		return response.Response{
+			Code:    http.StatusBadRequest,
+			Message: err,
+		}.JSON(ctx)
+	}
+
+	return response.Response{
+		Data: paginationResp,
+	}.JSON(ctx)
+}
+
+// Detail godoc
+//
+//	@Summary		Get detail a post
+//	@Description	Get detail a post
+//	@Tags			blog
+//	@Accept			application/json
+//	@Produce		application/json
+//	@Router			/blog_posts/{id} [get]
+//	@Success		200  {object}  response.Response{data=dto.BlogPost}  "ok"
+func (c BlogController) Detail(ctx echo.Context) error {
+	postID, err := strconv.ParseUint(ctx.Param("id"), 10, 32)
+	if err != nil {
+		return response.Response{
+			Code:    http.StatusInternalServerError,
+			Message: err,
+		}.JSON(ctx)
+	}
+
+	postResp, err := c.blogService.Get(uint(postID))
+	if err != nil {
+		return response.Response{
+			Code:    http.StatusNotFound,
+			Message: err,
+		}.JSON(ctx)
+	}
+
+	return response.Response{
+		Code: http.StatusOK,
+		Data: postResp,
+	}.JSON(ctx)
+}
+
+// Create godoc
+//
+//	@Summary		Create a Post
+//	@Description	Create a Post
+//	@Tags			blog
+//	@Accept			application/json
+//	@Produce		application/json
+//	@Router			/blog_posts [post]
+//	@Security 		BearerAuth
+//	@Success		201  {object}  response.Response{data=dto.BlogPostCreateResponse}  "created"
+func (c BlogController) Create(ctx echo.Context) error {
+	err := c.blogPolicy.CanCreate(ctx)
+	if err != nil {
+		return response.Response{
+			Error: err,
+		}.JSONPolicyError(ctx)
+	}
+
+	blogPostReq := new(dto.BlogPostCreateRequest)
+	if err := ctx.Bind(blogPostReq); err != nil {
+		return response.Response{
+			Error: err,
+		}.JSONValidationError(ctx)
+	}
+
+	user := ctx.Get(constants.CurrentUser).(*models.User)
+	postResp, err := c.blogService.Create(user, blogPostReq)
+	if err != nil {
+		return response.Response{
+			Code:    http.StatusBadRequest,
+			Message: err,
+		}.JSON(ctx)
+	}
+
+	return response.Response{
+		Code: http.StatusCreated,
+		Data: postResp,
+	}.JSON(ctx)
+}
+
+// Update godoc
+//
+//	@Summary		Update a Post
+//	@Description	Update a Post
+//	@Tags			blog
+//	@Accept			application/json
+//	@Produce		application/json
+//	@Router			/blog_posts/{id} [patch]
+//	@Security 		BearerAuth
+//	@Success		200  {object}  response.Response{data=dto.BlogPostUpdateResponse}  "ok"
+func (c BlogController) Update(ctx echo.Context) error {
+	postID, err := strconv.ParseUint(ctx.Param("id"), 10, 32)
+	if err != nil {
+		return response.Response{
+			Code:    http.StatusInternalServerError,
+			Message: err,
+		}.JSON(ctx)
+	}
+
+	err = c.blogPolicy.CanUpdate(ctx, uint(postID))
+	if err != nil {
+		return response.Response{
+			Error: err,
+		}.JSONPolicyError(ctx)
+	}
+
+	postReq := new(dto.BlogPostUpdateRequest)
+	if err := ctx.Bind(postReq); err != nil {
+		return response.Response{
+			Error: err,
+		}.JSONValidationError(ctx)
+	}
+
+	user := ctx.Get(constants.CurrentUser).(*models.User)
+	postResp, err := c.blogService.Update(user, uint(postID), postReq)
+	if err != nil {
+		return response.Response{
+			Code:    http.StatusBadRequest,
+			Message: err,
+		}.JSON(ctx)
+	}
+
+	return response.Response{
+		Code: http.StatusOK,
+		Data: postResp,
+	}.JSON(ctx)
+}
+
+// Delete godoc
+//
+//	@Summary		Delete a Post
+//	@Description	Delete a Post
+//	@Tags			blog
+//	@Accept			application/json
+//	@Produce		application/json
+//	@Router			/blog_posts/{id} [delete]
+//	@Security 		BearerAuth
+//	@Success		204  {object}  response.Response{}  "no content"
+func (c BlogController) Delete(ctx echo.Context) error {
+	postID, err := strconv.ParseUint(ctx.Param("id"), 10, 32)
+	if err != nil {
+		return response.Response{
+			Code:    http.StatusInternalServerError,
+			Message: err,
+		}.JSON(ctx)
+	}
+
+	err = c.blogPolicy.CanDelete(ctx, uint(postID))
+	if err != nil {
+		return response.Response{
+			Error: err,
+		}.JSONPolicyError(ctx)
+	}
+
+	err = c.blogService.Delete(uint(postID))
+	if err != nil {
+		return response.Response{
+			Code:    http.StatusBadRequest,
+			Message: err,
+		}.JSON(ctx)
+	}
+
+	return response.Response{
+		Code: http.StatusNoContent,
+	}.JSON(ctx)
+}
+
+// FollowingBlogPostList godoc
+//
+//	@Summary		Get Blog Posts by Following
+//	@Description	Get Blog Posts by Following
+//	@Tags			blog
+//	@Accept			application/json
+//	@Produce		application/json
+//	@Router			/following_blog_posts [get]
+//	@Security 		BearerAuth
+//	@Success		200  {object}  response.Response{data=dto.BlogPostPagination}  "ok"
+func (c BlogController) FollowingBlogPostList(ctx echo.Context) error {
+	queryParams := new(dto.BlogPostQueryParams)
+	if err := ctx.Bind(queryParams); err != nil {
+		return response.Response{
+			Error: err,
+		}.JSONValidationError(ctx)
+	}
+
+	err := c.blogPolicy.CanSeeFollowingPosts(ctx)
+	if err != nil {
+		return response.Response{
+			Error: err,
+		}.JSONPolicyError(ctx)
+	}
+
+	user := ctx.Get(constants.CurrentUser).(*models.User)
+	paginationResp, err := c.blogService.QueryByFollowing(user, queryParams)
+	if err != nil {
+		return response.Response{
+			Code:    http.StatusBadRequest,
+			Message: err,
+		}.JSON(ctx)
+	}
+
+	return response.Response{
+		Data: paginationResp,
+	}.JSON(ctx)
+}
